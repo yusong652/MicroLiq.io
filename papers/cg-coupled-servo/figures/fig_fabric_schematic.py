@@ -1,10 +1,14 @@
 """
 Schematic figure for fabric tensor decomposition mechanism.
 Panel (a): Cylindrical element showing τ_zθ and active/neutral contact directions
-Panel (b): Bar chart of Φ_rr, Φ_θθ, Φ_zz from Table 3 (D_r = 90%)
+Panel (b): Dual-axis comparison of count- and force-weighted torsion-resisting
+           fractions across the expanded simulation set (2 D_r x 5 K_0).
+           Numerical values are read from torsion_resisting_force.csv (bb-only).
 """
 
+from pathlib import Path
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from mpl_toolkits.mplot3d import Axes3D
@@ -204,7 +208,7 @@ ax1.text2D(0.02, 0.14,
            r'Resisting: $z, \theta$ contacts'
            r'  |  Neutral: $r$ contacts'
            '\n'
-           r'Resisting fraction $= 1 - \Phi_{rr}$',
+           r'Count: $1 - \Phi_{rr}$    Force: $1 - \Phi_{rr}^{f}$',
            transform=ax1.transAxes, fontsize=6.5, color='#333333',
            va='top', linespacing=1.6)
 
@@ -217,45 +221,56 @@ ax1.view_init(elev=30, azim=-0)
 ax1.set_title('(a)', fontsize=8, loc='left', pad=-12)
 
 # ═══════════════════════════════════════════════════════════════
-# Panel (b): Zoomed bar chart of 1 - Φ_rr (resisting fraction)
+# Panel (b): Dual y-axis line plot — count vs force torsion-resisting
+# Data source: torsion_resisting_force.csv (bb-only, expanded set)
 # ═══════════════════════════════════════════════════════════════
-ax2 = fig.add_axes([0.52, 0.13, 0.44, 0.78])
+ax2 = fig.add_axes([0.55, 0.18, 0.40, 0.72])
 
-# Data from Table 3
-K0_vals = [0.5, 0.67, 1.0, 1.5, 2.0]
-# D_r = 90%
-Phi_rr_90 = [0.333, 0.337, 0.338, 0.339, 0.343]
-resist_90 = [1 - p for p in Phi_rr_90]
-# D_r = 75%
-Phi_rr_75 = [0.333, 0.338, 0.339, 0.341, 0.346]
-resist_75 = [1 - p for p in Phi_rr_75]
-
+data = pd.read_csv(Path(__file__).resolve().parent / 'torsion_resisting_force.csv')
+data = data.sort_values(['Dr', 'K0']).reset_index(drop=True)
+K0_vals = sorted(data['K0'].unique())
 x = np.arange(len(K0_vals))
-width = 0.35
 
-bars_90 = ax2.bar(x - width/2, resist_90, width,
-                  label=r'$D_r = 90\%$', color=C_ACTIVE, alpha=0.85,
-                  edgecolor='white', linewidth=0.5)
-bars_75 = ax2.bar(x + width/2, resist_75, width,
-                  label=r'$D_r = 75\%$', color=C_ACTIVE, alpha=0.45,
-                  edgecolor='white', linewidth=0.5)
+C_COUNT = '#666666'
+C_FORCE = C_ACTIVE
 
-# Isotropic reference line (2/3)
-ax2.axhline(y=2/3, color='gray', linestyle='--', linewidth=0.5, alpha=0.5)
-# Add 2/3 as an extra tick label on the y-axis
-yticks = [0.650, 0.655, 0.660, 0.665, 0.670]
-ax2.set_yticks(yticks + [2/3])
-ax2.yaxis.set_major_formatter(plt.FuncFormatter(
-    lambda v, _: '2/3' if abs(v - 2/3) < 1e-6 else f'{v:.3f}'
-))
+def series(Dr: int, key: str) -> np.ndarray:
+    return data[data['Dr'] == Dr].sort_values('K0')[key].to_numpy()
+
+# Left axis: count-weighted 1 - Phi_rr
+ax2.plot(x, series(90, 'one_minus_Phi_r'), color=C_COUNT, marker='o',
+         markersize=4, linewidth=1.0, label=r'$1 - \Phi_{rr}$, $D_r$=90%')
+ax2.plot(x, series(75, 'one_minus_Phi_r'), color=C_COUNT, marker='o',
+         markerfacecolor='white', markersize=4, linewidth=1.0,
+         label=r'$1 - \Phi_{rr}$, $D_r$=75%')
+ax2.set_ylabel(r'Count $1 - \Phi_{rr}$', fontsize=8, color=C_COUNT)
+ax2.tick_params(axis='y', labelsize=7, colors=C_COUNT)
+ax2.spines['left'].set_color(C_COUNT)
+ax2.set_ylim(0.660, 0.690)
+
+# Right axis: force-weighted 1 - \Phi_{rr}^{f}
+ax2b = ax2.twinx()
+ax2b.plot(x, series(90, 'one_minus_Fn_r'), color=C_FORCE, marker='s',
+          markersize=4, linewidth=1.0, label=r'$1 - \Phi_{rr}^{f}$, $D_r$=90%')
+ax2b.plot(x, series(75, 'one_minus_Fn_r'), color=C_FORCE, marker='s',
+          markerfacecolor='white', markersize=4, linewidth=1.0,
+          label=r'$1 - \Phi_{rr}^{f}$, $D_r$=75%')
+ax2b.set_ylabel(r'Force $1 - \Phi_{rr}^{f}$', fontsize=8, color=C_FORCE)
+ax2b.tick_params(axis='y', labelsize=7, colors=C_FORCE)
+ax2b.spines['right'].set_color(C_FORCE)
+ax2b.spines['left'].set_color(C_COUNT)
+ax2b.set_ylim(0.62, 0.75)
 
 ax2.set_xticks(x)
 ax2.set_xticklabels([f'{k0:.2g}' for k0 in K0_vals])
 ax2.set_xlabel(r'$K_0$', fontsize=8)
-ax2.set_ylabel(r'Torsion-resisting fraction $1 - \Phi_{rr}$', fontsize=8)
-ax2.tick_params(axis='both', labelsize=7)
-ax2.set_ylim(0.650, 0.670)
-ax2.legend(loc='upper right', fontsize=7, framealpha=0.9)
+ax2.tick_params(axis='x', labelsize=7)
+
+# Combined legend
+h1, l1 = ax2.get_legend_handles_labels()
+h2, l2 = ax2b.get_legend_handles_labels()
+ax2.legend(h1 + h2, l1 + l2, loc='lower left', fontsize=6.5,
+           framealpha=0.9, handlelength=2.0)
 ax2.set_title('(b)', fontsize=8, loc='left')
 plt.savefig('/Users/hanyusong/thesis/MicroLiq/papers/cg-coupled-servo/figures/fabric_mechanism_schematic.png',
             dpi=600, bbox_inches='tight', facecolor='white')

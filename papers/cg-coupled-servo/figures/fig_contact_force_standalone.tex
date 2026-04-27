@@ -1,6 +1,6 @@
-% Standalone version for quick TikZ annotation tuning
-% Compile: pdflatex fig_contact_density_standalone.tex
-% Use a PDF viewer with auto-refresh (e.g., Skim) for live preview
+% Standalone force-rose figure (R2.7 companion to Fig. 14).
+% Compile: pdflatex fig_contact_force_standalone.tex
+% Use a PDF viewer with auto-refresh (e.g., Skim) for live preview.
 \documentclass[border=5pt]{standalone}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta, calc}
@@ -17,46 +17,44 @@
 
 \begin{document}
 \begin{tikzpicture}
-  \def\imgW{3.4cm}   % image width — tune for standalone preview
+  \def\imgW{3.4cm}
   \def\gap{1pt}
   \def\rowgap{12pt}
 
   % --- Row 1: K0=0.5 ---
   \node[anchor=north west, inner sep=0] (a1) at (0,0)
-    {\includegraphics[width=\imgW]{contact_density_k0_05_t0.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_05_t0.png}};
   \node[font=\small, anchor=south] at (a1.north) {$N/N_L = 0.00$};
   \node[anchor=north west, inner sep=0] (a2) at ([xshift=\gap]a1.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_05_t302.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_05_t302.png}};
   \node[font=\small, anchor=south] at (a2.north) {$N/N_L \approx 0.61$};
   \node[anchor=north west, inner sep=0] (a3) at ([xshift=\gap]a2.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_05_t523.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_05_t523.png}};
   \node[font=\small, anchor=south] at (a3.north) {$N/N_L \approx 1.05$};
   \node[anchor=north west, inner sep=0] (a4) at ([xshift=\gap]a3.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_05_t529.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_05_t529.png}};
   \node[font=\small, anchor=south] at (a4.north) {$N/N_L \approx 1.07$};
 
   % --- Axis labels on first image (a1) ---
-  % Anchor at bottom-left of a1; adjust offsets to taste
   \coordinate (axO) at ([xshift=6pt, yshift=12pt]a1.south west);
   \draw[->, thick] (axO) -- ++(0, 14pt)   node[font=\scriptsize, right, inner sep=1pt] {$z$};
   \draw[->, thick] (axO) -- ++(16pt, 2pt) node[font=\scriptsize, right, inner sep=1pt] {$\theta$};
   \draw[->, thick] (axO) -- ++(8pt, -8pt) node[font=\scriptsize, right, inner sep=1pt] {$r$};
 
   % --- Anisotropy annotations (bottom-right of each panel) ---
-  % A_c, B_c are the principal-axis magnitude and tilt of the contact-fabric
-  % tensor in local cylindrical (theta, r, z) frame:
-  %   A_c = sqrt(3/2) || F_c - I/3 ||_F      (deviator invariant, in [0,1])
-  %   B_c = angle of principal eigenvector from axial direction z, in [0, 90 deg]
-  % The plane in which the principal axis sits ((z,r) vs (z,theta)) is read
-  % directly from the rose; the text annotation reports magnitudes only.
+  % A_n, B_n are the principal-axis magnitude and tilt of the
+  % normal-force-weighted contact fabric tensor in local cylindrical
+  % (theta, r, z) frame:
+  %   A_n = sqrt(3/2) || F_n - I/3 ||_F   with F_n weighted by |F_n^c|
+  %   B_n = angle of principal eigenvector from axial direction z, in [0, 90 deg]
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (a1.south east)
-    {$A_c = \Acai$\\$B_c = \Bcai^\circ$};
+    {$A_n = \Anai$\\$B_n = \Bnai^\circ$\\$\langle F_n\rangle = \Fbarai$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (a2.south east)
-    {$A_c = \Acaii$\\$B_c = \Bcaii^\circ$};
+    {$A_n = \Anaii$\\$B_n = \Bnaii^\circ$\\$\langle F_n\rangle = \Fbaraii$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (a3.south east)
-    {$A_c = \Acaiii$\\$B_c = \Bcaiii^\circ$};
+    {$A_n = \Anaiii$\\$B_n = \Bnaiii^\circ$\\$\langle F_n\rangle = \Fbaraiii$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (a4.south east)
-    {$A_c = \Acaiv$\\$B_c = \Bcaiv^\circ$};
+    {$A_n = \Anaiv$\\$B_n = \Bnaiv^\circ$\\$\langle F_n\rangle = \Fbaraiv$\,N};
 
   % K0=0.5 label
   \path (a1.south) -- (a4.south) coordinate[midway] (row1mid);
@@ -64,48 +62,40 @@
 
   % --- Row 2: K0=2.0 ---
   \node[anchor=north west, inner sep=0] (b1) at ([yshift=-\rowgap]a1.south west)
-    {\includegraphics[width=\imgW]{contact_density_k0_20_t0.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_20_t0.png}};
   \node[anchor=north west, inner sep=0] (b2) at ([xshift=\gap]b1.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_20_t226.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_20_t226.png}};
   \node[anchor=north west, inner sep=0] (b3) at ([xshift=\gap]b2.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_20_t379.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_20_t379.png}};
   \node[anchor=north west, inner sep=0] (b4) at ([xshift=\gap]b3.north east)
-    {\includegraphics[width=\imgW]{contact_density_k0_20_t386.png}};
+    {\includegraphics[width=\imgW]{contact_force_k0_20_t386.png}};
 
   % --- Anisotropy annotations (bottom-right of each panel) ---
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (b1.south east)
-    {$A_c = \Acbi$\\$B_c = \Bcbi^\circ$};
+    {$A_n = \Anbi$\\$B_n = \Bnbi^\circ$\\$\langle F_n\rangle = \Fbarbi$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (b2.south east)
-    {$A_c = \Acbii$\\$B_c = \Bcbii^\circ$};
+    {$A_n = \Anbii$\\$B_n = \Bnbii^\circ$\\$\langle F_n\rangle = \Fbarbii$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (b3.south east)
-    {$A_c = \Acbiii$\\$B_c = \Bcbiii^\circ$};
+    {$A_n = \Anbiii$\\$B_n = \Bnbiii^\circ$\\$\langle F_n\rangle = \Fbarbiii$\,N};
   \node[font=\tiny, anchor=south east, align=right, inner sep=2pt] at (b4.south east)
-    {$A_c = \Acbiv$\\$B_c = \Bcbiv^\circ$};
+    {$A_n = \Anbiv$\\$B_n = \Bnbiv^\circ$\\$\langle F_n\rangle = \Fbarbiv$\,N};
 
   % K0=2.0 label
   \path (b1.south) -- (b4.south) coordinate[midway] (row2mid);
   \node[font=\scriptsize, anchor=north] at ([yshift=-1pt]row2mid) {$\Kzero{} = 2.0$};
 
   % --- Rainbow colorbar (right, spanning both rows) ---
+  % DENSITY_MAX_FORCE = 1.2 N in the Blender renderer;
+  % colorbar ticks span 0 .. 1.2 N (mean |F_n| per contact in each bin).
   \pgfpointdiff{\pgfpointanchor{b4}{south}}{\pgfpointanchor{a4}{north}}
   \pgfgetlastxy{\discard}{\cbarH}
   \node[anchor=north west, inner sep=0] (cbar) at ([xshift=4pt]a4.north east)
     {\includegraphics[height=\cbarH]{colorbar_rainbow.png}};
-  \foreach \val/\frac in {0.5/0, 0.4/0.2, 0.3/0.4, 0.2/0.6, 0.1/0.8, 0/1.0} {
+  \foreach \val/\frac in {1.2/0, 0.9/0.25, 0.6/0.5, 0.3/0.75, 0/1.0} {
     \node[font=\footnotesize, anchor=west] at
       ([xshift=2pt, yshift={-\frac*\cbarH}]cbar.north east) {\val};
   }
   \node[font=\footnotesize, rotate=90, anchor=south] at
-    ([xshift=32pt]cbar.east) {Contact density $\rho_c$};
-
-  % --- DEBUG: uncomment grid to help position axis labels ---
-  % \begin{scope}[
-  %   x={(a1.south east)}, y={(a1.north west)}, shift={(a1.south west)},
-  % ]
-  %   \draw[help lines, step=0.1, gray!30] (0,0) grid (1,1);
-  %   \foreach \x in {0.0, 0.1, ..., 1.0} {
-  %     \node[font=\tiny, gray] at (\x, -0.02) {\x};
-  %   }
-  % \end{scope}
+    ([xshift=32pt]cbar.east) {Mean normal contact force $\overline{F}_n$ (N)};
 \end{tikzpicture}
 \end{document}
