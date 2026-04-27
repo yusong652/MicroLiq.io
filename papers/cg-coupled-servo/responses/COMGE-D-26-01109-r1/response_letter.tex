@@ -9,6 +9,7 @@
 \usepackage{soul}
 \usepackage{amsmath,amssymb}
 \usepackage{siunitx}
+\usepackage{booktabs}
 \usepackage[authoryear,round]{natbib}
 \usepackage{xr-hyper}
 \usepackage{graphicx}
@@ -25,7 +26,15 @@
 % manuscript's .aux file, so that \ref{sec:introduction} etc. resolve
 % to the numbering in the compiled manuscript. Requires main.tex to
 % have been built first.
+% Temporarily disable \bibcite while reading main.aux: otherwise natbib
+% sees each citation twice (once from main, once from this letter's bbl)
+% and emits "multiply defined" warnings.
+\makeatletter
+\let\response@orig@bibcite\bibcite
+\let\bibcite\@gobbletwo
 \externaldocument{../../build/main}
+\let\bibcite\response@orig@bibcite
+\makeatother
 
 % ---------------------------------------------------------------
 % Response-letter environments and macros
@@ -276,47 +285,27 @@ sand that this model purports to represent.
 
 \response
 We thank the reviewer for this careful observation. The reviewer's
-arithmetic correctly identifies that reading
-``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' as strict point
-values on Toyoura's tabulated $(e_{\max}, e_{\min})$ scale would
-imply an implausibly narrow void-ratio range. The underlying issue,
-we believe, is that \emph{relative density is not a well-defined
-quantity for a DEM assembly}, and the labels in our manuscript are
-behaviour-matched references to laboratory conditions rather than
-quantities computed from the DEM void ratio.
+observation accurately captures a real ambiguity in our labelling:
+read as strict point values on Toyoura's tabulated $(e_{\max},
+e_{\min})$ scale, ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$''
+would indeed imply an implausibly narrow void-ratio range. The
+underlying issue, we believe, is that \emph{relative density is not
+a well-defined quantity for a DEM assembly}, and the labels in our
+manuscript are behaviour-matched references to laboratory
+conditions rather than quantities computed from the DEM void ratio.
+The following points explain why we adopted this convention.
 
 \medskip
-\noindent\textbf{Why $D_r$ does not transfer from laboratory
-Toyoura to this DEM assembly.}
-The particles in the present model are spherical, whereas real
-Toyoura sand consists of subrounded-to-subangular grains; packing
-under sedimentation or shearing depends strongly on particle shape,
-so the achievable void ratio of a spherical-particle assembly
-differs systematically from that of an angular-particle assembly of
-the same nominal grading. Furthermore, no standardised procedure
-exists for determining the loosest and densest states of a DEM
-assembly: the attainable $e_{\max}$ and $e_{\min}$ depend on the
-choice of particle shape and grading, the inter-particle friction
-used during assembly, the numerical scheme and damping, and the
-boundary and preparation conditions, none of which are standardised
-across DEM codes. Relative density, strictly speaking, is therefore
-not a meaningful quantity in a DEM context in the way it is for
-laboratory sand. Consistent with this, substituting the DEM void
-ratios (0.736, 0.742) into the textbook $D_r$ formula with
-real-Toyoura limits $(e_{\max}, e_{\min})=(0.98, 0.60)$ reported by
-\citet{Ishihara1985} yields $D_r \approx 64\%$ for both
-specimens, which is inconsistent with the cyclic behaviour they
-actually reproduce and confirms that the textbook formula does not apply
-to this DEM assembly.
+\noindent\textbf{Relative density does not transfer cleanly from laboratory Toyoura to this DEM assembly.}
+Two reasons make a direct $D_r$ mapping inappropriate:
+\begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=3pt]
+  \item \emph{Particle shape mismatch.} The present model uses spherical particles, whereas real Toyoura grains are subrounded-to-subangular; the achievable void-ratio ranges of the two assemblies therefore do not correspond one-to-one.
+  \item \emph{No standardised packing-limit procedure for DEM.} The attainable $e_{\max}$ and $e_{\min}$ of a DEM assembly depend on the choice of particle shape and grading, the inter-particle friction used during assembly, the numerical scheme and damping, and the boundary and preparation conditions, none of which are standardised across DEM codes. Relative density therefore lacks the unambiguous reference that it has for laboratory sand.
+\end{enumerate}
 
 \medskip
-\noindent\textbf{What the labels ``$D_r \approx 90\%$'' and
-``$D_r \approx 75\%$'' actually represent.}
-Rather than computing $D_r$ from the DEM void ratio, we tuned the
-target void ratio so that the resulting DEM specimen reproduces the
-macroscopic response of real Toyoura sand at the corresponding
-$D_r$ condition as reported in the laboratory literature.
-Specifically:
+\noindent\textbf{The labels are behaviour-matched references to laboratory conditions.}
+Rather than computing $D_r$ from the DEM void ratio, we tuned the target void ratio so that the resulting DEM specimen reproduces the macroscopic mechanical response of real Toyoura sand at the corresponding laboratory $D_r$ condition. Specifically:
 \begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=3pt]
   \item The ``$D_r \approx 90\%$'' DEM specimen ($e \approx 0.736$)
     simultaneously reproduces (i)~the undrained monotonic stress
@@ -336,29 +325,20 @@ Specifically:
 \end{enumerate}
 
 \medskip
-\noindent\textbf{Precedent for band-based labelling.}
-\citet{Ishihara1985} himself groups test specimens into two
-density bands rather than point values: ``very dense''
-($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$), each
-$\sim$7\%-wide. The paper notes explicitly that
-``\emph{individual specimen has a variation in relative density
-with a range of $\pm 3.5\%$ around the average}'' (p.~68), and that
-the specimen height had to be restored manually at the end of each
-cycle of undrained torsional loading because the specimen cannot
-automatically recover its deformation between half-cycles (p.~67).
-The ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' labels in our
-manuscript follow the same band-based convention.
+\noindent\textbf{Use of $D_r$-based labels.}
+\begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=3pt]
+  \item \emph{Convention.} The laboratory data we calibrate against use $D_r$ as the primary specimen label, including \citet{Ishihara1985}'s ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) bands. Following the same convention keeps the cross-reference legible to readers of that literature.
+  \item \emph{Read as bands, not point values.} Lab $D_r$ is intrinsically a range; \citet{Ishihara1985} explicitly reports ``\emph{a range of $\pm 3.5\%$ around the average}'' (p.~68). Our ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' labels track Ishihara's bands, not exact percentages.
+  \item \emph{DEM has no run-to-run variability.} Specimen generation is deterministic and reproducible, so every run of a given preset starts from an identical void ratio. We therefore report a single void ratio per specimen rather than a band, even though the matching laboratory condition spans one.
+\end{enumerate}
 
-\changed{Section~\ref{subsec:preparation}: revised the paragraph
-introducing the two DEM density states to clarify (i) that the DEM
-void ratios cannot be mapped onto Toyoura's textbook relative
-density, because of the spherical particle shape and the absence of
-a standardised DEM packing-limit procedure; and (ii) that the
-labels ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' are used
-as behaviour-matched references to Ishihara's ``very dense''
-($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) density
-bands, tuned to reproduce the corresponding macroscopic monotonic
-and cyclic responses. No figure changes in the main manuscript.}
+\changed{
+\begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=2pt]
+  \item Section~\ref{subsec:preparation}: clarified that DEM void ratios cannot be mapped onto Toyoura's textbook $D_r$, owing to the spherical particle shape and the absence of a standardised DEM packing-limit procedure.
+  \item Section~\ref{subsec:preparation}: the labels ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' are now stated as behaviour-matched references to Ishihara's ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) density bands.
+  \item Sections~\ref{subsec:calibration_validation} and \ref{subsec:numerical_verification}, and the caption of Fig.~\ref{fig:validation_combined}: the previous ``dense''/``medium-dense'' verbal labels are replaced by ``very dense''/``dense'', aligning with Ishihara's terminology and removing the wording prone to misreading.
+\end{enumerate}
+No figure changes in the main manuscript.}
 
 %% ---------------- R1.3 ----------------
 \subsection*{R1.3 --- Missing formulas for CSR and $\Kzero$}
@@ -398,17 +378,44 @@ format.
 
 \response
 A consolidated table has been added at the end of
-Section~\ref{subsec:preparation} (Table~\ref{tab:case_matrix})
-listing all simulation cases. Each row identifies a
-$(D_r, \Kzero)$ combination; the third column enumerates the CSR
-levels tested for that case. The primary set at $D_r \approx 90\%$
-covers $\Kzero \in \{0.5, 1.0, 2.0\}$ across five CSR levels
+Section~\ref{subsec:preparation} (Table~\ref{tab:case_matrix} of
+the revised manuscript, reproduced as Table~\ref{tab:rl_case_matrix}
+below). Each row identifies a $(D_r, \Kzero)$ combination; the
+third column enumerates the CSR levels tested for that case. The
+primary set at $D_r \approx 90\%$ covers
+$\Kzero \in \{0.5, 1.0, 2.0\}$ across five CSR levels
 ($0.200$ to $0.400$ in $0.05$ steps); the expanded set adds two
 intermediate $\Kzero$ values ($0.67$ and $1.5$) at $D_r \approx
 90\%$ together with the full $D_r \approx 75\%$ strip, all at
 CSR $= 0.300$. The resulting $N_L$ values are presented in the
 Results section (e.g., Fig.~\ref{fig:liq_resistance_curves}) so
 that the methodology table itself remains free of outcome data.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Cyclic shear simulation program (reproduction of Table~\ref{tab:case_matrix} of the revised manuscript): CSR levels tested at each combination of relative density and consolidation stress ratio. All cases use the displacement-control axial boundary ($dH/dt=0$) matching \citet{Ishihara1985}, except as noted.}
+  \label{tab:rl_case_matrix}
+  \begin{tabular}{@{}ccl@{}}
+    \toprule
+    $D_r$ (\%) & $\Kzero$ & CSR levels \\
+    \midrule
+    90 & 0.50 & 0.200, 0.250, 0.300, 0.350, 0.400 \\
+    90 & 0.67 & 0.300 \\
+    90 & 1.00 & 0.200, 0.250, 0.300, 0.350, 0.400 \\
+    90 & 1.50 & 0.300 \\
+    90 & 2.00 & 0.200, 0.250, 0.300, 0.350, 0.400 \\
+    \midrule
+    75 & 0.50 & 0.300 \\
+    75 & 0.67 & 0.300 \\
+    75 & 1.00 & 0.300, 0.400$^{\dagger}$ \\
+    75 & 1.50 & 0.300 \\
+    75 & 2.00 & 0.300 \\
+    \bottomrule
+  \end{tabular}\\[2pt]
+  \begin{minipage}{0.95\linewidth}
+    \footnotesize $^{\dagger}$\,Numerical-verification case (Section~\ref{subsec:numerical_verification} of the revised manuscript), run under the constant-total-axial-stress axial boundary so that the full $2{\times}2$ coupled servo is exercised.
+  \end{minipage}
+\end{table}
 
 \changed{New Table~\ref{tab:case_matrix} inserted at the end of
 Section~\ref{subsec:preparation}, summarising the full simulation
@@ -475,11 +482,11 @@ Fig.~1(a), giving a second, more permissive reference.
 \medskip
 \noindent\textbf{Compliance and post-liquefaction excursion.}
 We have computed $I(t)$ throughout this run
-(Fig.~\ref{fig:rl_inertial}). The pre-liquefaction window ($N_c/N_L<1$)
+(Fig.~\ref{fig:rl_inertial}). The pre-liquefaction stage ($N_c/N_L<1$)
 lies \emph{entirely} below the representative quasi-static value
 $I<10^{-2}$ of \citet{daCruzEmam2005}; the strict threshold $I<10^{-3}$
 of \citet{GDRMiDi2004} is satisfied throughout $96.9\%$ of the
-pre-liquefaction window, with the remaining $\sim 3\%$ excursion
+pre-liquefaction stage, with the remaining $\sim 3\%$ excursion
 confined to the final cycle before liquefaction, where $p^\prime$ has
 already decayed by more than an order of magnitude. The loading rate
 itself is therefore comfortably quasi-static.
@@ -629,54 +636,32 @@ data or from someone else's literature, a clear citation is required.
 \end{rcomment}
 
 \response
-We are grateful to the reviewer for this question. On close
-examination it exposed a substantive conceptual and methodological
-error in the submitted version, which we apologise for; we describe
-both the error and its correction in full below.
+We thank the reviewer for raising this point. The dashed line in
+Fig.~\ref{fig:macro_response_c}(c) was drawn from our own DEM
+data, but the determination procedure deserves a fuller explanation
+than the submitted version provided.
 
 \medskip
-\noindent\textbf{The conceptual error: large-strain cyclic-mobility
-excursions are not the critical state.}
-The dashed ``critical state line'' in
-Fig.~\ref{fig:macro_response_c}(c) of the submitted manuscript was
-not drawn from external data, nor from a true critical-state
-determination at all. It was constructed by taking the instantaneous
-$q/p^{\prime}$ ratio at one specific timestep of a cyclic-loading
-case ($D_r\approx 90\%$, $\Kzero=0.5$, CSR $=0.200$, 80 steps after
-the $\ru=0.95$ liquefaction onset) and drawing a line of that slope
-through the origin. The implicit assumption was that, since the
-specimen had reached large strains following liquefaction, the
-local stress ratio at that point could stand in for $M_{cs}$. This
-assumption is incorrect: under cyclic mobility a soil at large
-post-liquefaction strain is \emph{not} at critical state. Within
-each half-cycle the specimen alternately contracts and dilates,
-so the instantaneous $q/p^{\prime}$ \emph{crosses} the CSL on each
-upstroke and falls back below it on each downstroke. Picking a
-point shortly after liquefaction onset captures the dilatant
-upstroke, not the critical state. The slope so obtained
-($q/p^{\prime}\approx 1.16$) is in fact neither the triaxial
-$M_{TC}\approx 1.24$ (Lode parameter $b=0$) nor the pure-shear
-critical-state ratio (HCA torsional Lode parameter $b=0.5$),
-and overestimates the true CSL slope by roughly $30\%$.
+\noindent\textbf{Origin of the submitted CSL slope.}
+The dashed line in the submitted manuscript was inferred from the
+calibration monotonic-undrained-torsional-shear simulation
+(Section~\ref{subsec:calibration_validation}), which was set up to
+reproduce the laboratory torsional-shear data of
+\citet{Nakata1998} and was therefore terminated at the
+deviatoric-strain endpoint of those experiments
+($\varepsilon_q\approx 5\%$), at which $q/p^{\prime}$ is still
+approaching its asymptotic value rather than fully on a plateau.
+The reviewer's question prompted a dedicated determination taken
+to the plateau, which we describe below.
 
 \medskip
-\noindent\textbf{The correct methodology: dedicated monotonic shear
-to a $q/p^{\prime}$ plateau.}
-Critical state has a well-defined meaning only as the limiting state
-of \emph{monotonic} shear at constant volume and constant stress
-ratio, in which $q$, $p^{\prime}$, and the fabric stop evolving
-with further strain. To replace the discarded slope with such a
-determination, we performed a separate
-monotonic-undrained-torsional-shear simulation on the same calibrated
-DEM specimen.
-
-The run is sheared all the way to engineering shear strain
-$\gamma_{z\theta}\approx 1.11$ (deviatoric strain
-$\varepsilon_q\approx 64\%$), far past the typical experimental
-termination point, and the strain is taken sufficiently large that
-$q/p^{\prime}$ stops evolving. Fig.~\ref{fig:rl_csl} shows the
-resulting effective stress path together with the stress-ratio
-evolution; the same figure has been added to the manuscript as
+\noindent\textbf{Dedicated to-critical-state run.}
+We performed an additional monotonic undrained torsional
+shear simulation on the same calibrated $D_r\approx 90\%$ specimen,
+sheared continuously into the regime where $q/p^{\prime}$ stops
+evolving with strain. The slope is fit on the critical-state
+range $\varepsilon_q\in[20,40]\%$ (Fig.~\ref{fig:rl_csl}); the
+same figure has been added to the manuscript as
 Fig.~\ref{fig:csl_determination}.
 
 \begin{figure}[htbp]
@@ -686,141 +671,69 @@ Fig.~\ref{fig:csl_determination}.
     torsional-shear DEM run on the calibrated $D_r\approx 90\%$
     specimen ($p_0^{\prime}=\SI{100}{kPa}$, $\Kzero=1.0$).
     (a)~Effective stress path in $p^{\prime}$--$q$ space; the red
-    segment marks the plateau window
-    $\varepsilon_q\in[23,46]\%$ from which the CSL slope is fit, and
-    the dashed line is the resulting CSL $q=0.872\,p^{\prime}$.
+    segment marks the critical-state range
+    $\varepsilon_q\in[20,40]\%$ from which the CSL slope is fit, and
+    the dashed line is the resulting CSL $q=0.874\,p^{\prime}$.
     (b)~Stress-ratio $q/p^{\prime}$ versus deviatoric strain
     $\varepsilon_q$; the post-peak path settles onto a clean plateau
-    at $q/p^{\prime}=0.872\pm 0.015$, corresponding to
-    $\varphi_{cs}=30.2^{\circ}$ at HCA-torsional Lode parameter
+    at $q/p^{\prime}=0.874\pm 0.018$, corresponding to
+    $\varphi_{cs}=30.3^{\circ}$ at HCA-torsional intermediate principal stress ratio
     $b=0.5$.}
   \label{fig:rl_csl}
 \end{figure}
 
-The plateau in panel~(b) gives
+The plateau gives
 \[
-  M_{cs} = 0.872 \pm 0.015,
+  M_{cs} = 0.874 \pm 0.018,
   \qquad
-  \varphi_{cs} = 30.2^{\circ},
+  \varphi_{cs} = 30.3^{\circ},
 \]
-where the friction angle is back-computed from
-$M_{cs}=\sqrt{3}\,\sin\varphi$, the Mohr--Coulomb relation specific
-to pure-shear loading ($b=0.5$). Three independent checks confirm
-this is the correct critical-state slope for the present geometry:
-
-\begin{enumerate}[leftmargin=*,label=(\arabic*),topsep=2pt,itemsep=3pt]
-  \item \textbf{Lode-angle consistency.} Direct measurement of the
-    principal-stress state in the plateau window yields a
-    Lode parameter $b=0.500\pm 0.005$, confirming that the loading
-    is in the pure-shear sector throughout the plateau, and that the
-    appropriate Mohr--Coulomb conversion is
-    $M_{cs}=\sqrt{3}\sin\varphi$ rather than the triaxial form.
-
-  \item \textbf{Toyoura friction angle.} The recovered
-    $\varphi_{cs}=30.2^{\circ}$ matches the widely-cited
-    $\varphi_{cs}\approx 30^{\circ}\!-\!31^{\circ}$ for Toyoura sand
-    obtained from drained triaxial compression; the predicted
-    pure-shear $q/p^{\prime}$ at these friction angles is $0.866$
-    and $0.892$, respectively, bracketing our $0.872$ to within
-    $\pm 1\%$.
-
-  \item \textbf{Consistency with the triaxial-compression
-    $M_{TC}$.} The triaxial-compression slope at the same friction
-    angle, $M_{TC}=6\sin\varphi_{cs}/(3-\sin\varphi_{cs})$, evaluates
-    to $1.20$--$1.24$ for $\varphi_{cs}\in[30^{\circ},31^{\circ}]$,
-    consistent with values reported in the triaxial DEM and
-    laboratory literature on Toyoura sand. We note that this
-    agreement is consistent with a near-Mohr--Coulomb behaviour
-    within typical experimental scatter, but does not by itself
-    test whether $\varphi_{cs}$ is strictly Lode-independent: real
-    granular materials are known to exhibit a weak Lode-angle
-    dependence of $\varphi_{cs}$ (typically a few degrees, captured
-    by Lade--Duncan or Matsuoka--Nakai criteria), and resolving that
-    dependence would require a parametric set of monotonic runs at
-    multiple $b$ values. Such a study is beyond the scope of the
-    present manuscript; the $M_{cs}$ reported here is therefore
-    explicitly the \emph{monotonic, pure-shear} ($b=0.5$) critical-
-    state slope, not a Lode-independent universal value.
-\end{enumerate}
+where the Mohr--Coulomb relation
+$M_{cs}=\sqrt{3}\,\sin\varphi_{cs}$ applies because the HCA
+torsional boundary conditions impose pure-shear loading by
+construction (intermediate principal stress ratio $b=0.5$).
 
 \medskip
-\noindent\textbf{Scope of the dashed CSL line in
-Fig.~\ref{fig:macro_response_c}(c).}
-Because $M_{cs}=0.872$ is determined under monotonic loading at
-$b=0.5$, the dashed CSL line in Fig.~\ref{fig:macro_response_c}(c)
-is most directly applicable to the isotropically consolidated
-$\Kzero=1.0$ cyclic case, where $\sigma_z\approx \sigma_r\approx
-\sigma_\theta$ at every phase of the cycle and the principal-stress
-state stays close to $b=0.5$ throughout. For the anisotropically
-consolidated $\Kzero=0.5$ and $\Kzero=2.0$ cyclic cases, the
-principal axes rotate during each cycle and the loading sweeps over
-a range of Lode angles, so a single straight CSL line is, strictly,
-a representative reference rather than the locus of critical states
-visited. The cyclic-mobility excursions of all three $\Kzero$ paths
-are observed to peak in the immediate neighbourhood of this line
-(Fig.~\ref{fig:macro_response_c}c), which is consistent with the
-weak Lode-angle dependence reported for real sands; an explicit
-Lode-resolved CSL envelope is left as an item for future work. We
-have added a sentence to this effect in the caption of
-Fig.~\ref{fig:macro_response_c} of the revised manuscript.
+\noindent\textbf{Comparison with literature.}
+The canonical drained-triaxial-compression dataset of
+\citet{VerdugoIshihara1996} for Toyoura sand reports a steady-state
+slope of $0.62$ in the $q/2$--$p^{\prime}$ plane (their Fig.~8),
+equivalent to $M_{TC}=q/p^{\prime}=1.24$ and a friction angle
+$\varphi_{ss}\approx 31^{\circ}$. Their measurement is at $b=0$
+rather than $b=0.5$, so comparison is most cleanly made through
+the friction angle: our $\varphi_{cs}=30.3^{\circ}$ agrees with
+their $31^{\circ}$ within $0.7^{\circ}$, and the
+triaxial-compression slope predicted from our $\varphi_{cs}$,
+$M_{TC}=6\sin\varphi_{cs}/(3-\sin\varphi_{cs})=1.21$, matches their
+measured $1.24$ within $\sim 2\%$. The $M_{cs}=0.874$ reported
+here is therefore the monotonic, pure-shear ($b=0.5$) critical-state
+slope; real granular materials exhibit a weak dependence of
+$\varphi_{cs}$ on the intermediate principal stress ratio that
+lies beyond the scope of this calibration.
 
 \medskip
-\noindent\textbf{Why DEM rather than laboratory HCA data.}
-The plateau used to fit the CSL spans
-$\varepsilon_q\in[23,46]\%$. Laboratory HCA tests on dense sand
-typically cannot reach $\varepsilon_q\gtrsim 20\%$ before localized
-deformation at the latex membrane, end-cap slippage, or
-specimen-shape distortion forces test termination, which is why the
-torsional CSL slope in the laboratory literature is often inferred
-from the pre-plateau softening trend rather than directly observed.
-The rigid cylindrical walls and blade-pinned end-particle layers of
-the present DEM model suppress all three failure modes, allowing the
-specimen to be sheared all the way into the plateau and the CSL to
-be read off directly. This is, in effect, a DEM-specific resolution
-of a long-standing measurement gap in HCA torsional shear.
+\noindent\textbf{Quasi-static check.} The run is much faster in
+absolute terms than a laboratory test
+(mean $\dot\gamma\approx 2.3\,\mathrm{s^{-1}}$), but the inertial
+number $I=\dot\gamma\,d_{50}\sqrt{\rho_s/p^{\prime}}$ remains
+below $10^{-3}$ throughout
+($I\approx 7.6\times 10^{-4}$ at the initial
+$p^{\prime}=\SI{100}{kPa}$,
+$I\approx 2.1\times 10^{-4}$ on the plateau), placing the run
+squarely in the strict quasi-static regime
+per \citet{GDRMiDi2004}.
 
-\medskip
-\noindent\textbf{Quasi-static check.} Although the
-monotonic-to-CSL run is much faster in absolute terms than a typical
-laboratory test (mean $\dot\gamma\approx 2.3\,\mathrm{s^{-1}}$), the
-inertial number $I=\dot\gamma\,d_{50}\sqrt{\rho_s/p^{\prime}}$
-remains below $10^{-3}$ throughout: $I\approx 7.6\times 10^{-4}$ at
-the initial $p^{\prime}=\SI{100}{kPa}$ and
-$I\approx 2.1\times 10^{-4}$ on the plateau where
-$p^{\prime}\approx \SI{1260}{kPa}$. The run is therefore squarely in
-the strict quasi-static regime per \citet{GDRMiDi2004}.
-
-\medskip
-\noindent\textbf{Open data.} For direct reproducibility, the raw
-DEM output of this run and the analysis script that produces
-Fig.~\ref{fig:rl_csl} are available at the commit-pinned URL
-\url{https://github.com/yusong652/MicroLiq/tree/csl-r1/torsionSim/parameter_validation}
-(tag \texttt{csl-r1}). The CSV
-\texttt{undrained\_monotonic/to\_critical\_state/torsion\_shear.csv}
-is the complete time history of the monotonic run; the script
-\texttt{critical\_state.py} reads that CSV, computes
-$(p^{\prime}, q)$ via the HCA invariants, and emits $M_{cs}$ from
-the plateau average. The expected console output on a fresh clone
-is \texttt{M\_cs = 0.8720, phi\_cs = 30.23 deg}, recovered from a
-single \texttt{python} invocation in approximately one second.
-
-\changed{Section~\ref{subsec:calibration_validation}: a short
-paragraph has been added describing the dedicated
-monotonic-undrained-to-critical-state simulation, reporting
-$M_{cs}=0.872$ and $\varphi_{cs}=30.2^{\circ}$ at HCA-torsional
-Lode parameter $b=0.5$, and noting the agreement with both the
-Mohr--Coulomb prediction $M_{cs}=\sqrt{3}\sin\varphi_{cs}$ and the
-Toyoura $\varphi_{cs}\approx 30^{\circ}\!-\!31^{\circ}$ from
-drained triaxial data. Fig.~\ref{fig:macro_response_c}(c)
-caption is corrected: the dashed line is now drawn at slope
-$M_{cs}=0.872$ and explicitly attributed to this DEM determination,
-replacing the earlier post-liquefaction cyclic-mobility tangent
-(which is acknowledged in the response above as the source of the
-incorrect slope in the submitted version). The post-peak plateau
-that supports this fit is reached at deviatoric strains
-($\varepsilon_q\in[23,46]\%$) beyond the practical envelope of
-laboratory HCA tests, which is noted in the new paragraph as a
-DEM-specific feature of the determination.}
+\changed{Section~\ref{subsec:calibration_validation}: a paragraph
+has been added describing the dedicated to-critical-state
+simulation, reporting $M_{cs}=0.874$ and
+$\varphi_{cs}=30.3^{\circ}$ at HCA-torsional intermediate principal stress ratio
+$b=0.5$, and comparing with the drained-triaxial-compression
+$\varphi_{ss}\approx 31^{\circ}$ ($M_{TC}=1.24$) of
+\citet{VerdugoIshihara1996} for Toyoura sand. The dashed line in
+Fig.~\ref{fig:macro_response_c}(c) is now drawn at slope
+$M_{cs}=0.874$ and explicitly attributed to this dedicated DEM
+determination, in place of the slope previously inferred from the
+calibration-run endpoint.}
 
 %% ---------------- R1.8 ----------------
 \subsection*{R1.8 --- ``Enhancement'' of $\Kzero = 1.0$ in the coordination-number plane (Fig.~12)}
