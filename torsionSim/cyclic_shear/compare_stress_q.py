@@ -4,13 +4,20 @@ import matplotlib.pyplot as plt
 from pylab import style as st
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
+# Critical-state slope sourced from Verdugo & Ishihara (1996) for
+# Toyoura sand: their drained triaxial-compression dataset (b = 0)
+# gives a steady-state friction angle phi_cs ~= 31 deg, which converts
+# to the present HCA pure-shear loading (b = 0.5) via the
+# Mohr-Coulomb relation M_cs = sqrt(3) * sin(phi_cs).
+_PHI_CS_DEG_VI = 31.0
+
 # setting style
 # st.use("seaborn-deep")
 csr_arr = [0.200]
 k0s = [0.5, 0.67, 1.0, 1.5, 2.0]
 markers = ['d', 's', 'o', '^', 'v']
 colors = ['tab:orange', 'tab:red', 'tab:blue', 'tab:purple', 'tab:green']
-linestyles = ['-.', ':', '-', '--', '-.']
+linestyles = ['-.', ':', '-', '--', ':']
 
 fig1 = plt.figure(figsize=(6,4))
 ax1 = plt.gca()
@@ -58,21 +65,15 @@ def draw_dev(k0, lst, color):
 		ax1.plot(stresses_p[flt][::16],stresses_dev[flt][::16],linewidth=LW_MAIN,
 			label=r"$K_0=%.2f$"%k0, color=color, linestyle=lst)
 
-# Critical-state slope determined from a dedicated monotonic-undrained
-# torsional-shear run on the same calibrated specimen, pushed to
-# epsilon_q ~ 64% so that q/p reaches a clean plateau at HCA-torsional
-# Lode parameter b = 0.5. Source: torsionSim/parameter_validation/
-# critical_state.py (plateau eps_q in [23, 46]%, N = 651 points).
-#   M_cs   = 0.872 +/- 0.015
-#   phi_cs = 30.2 deg  (M_cs = sqrt(3) * sin(phi_cs), pure-shear)
-M_CS = 0.872
+M_CS = float(np.sqrt(3.0) * np.sin(np.radians(_PHI_CS_DEG_VI)))
 
 
 def draw_csl():
 	p_max = 120.0
 	ax1.plot([0.0, p_max], [0.0, M_CS * p_max],
 		linewidth=LW_MAIN,
-		label=r"$Critical\ state\ line\ (M_{cs}=%.3f)$" % M_CS,
+		label=(r"$Critical\ state\ line$" + "\n"
+			+ r"$M_{cs}=%.3f$" % M_CS),
 		color='tab:red', linestyle='--')
 
 # ax1.set_title(r"$Triaxial\ Compression$")
@@ -91,11 +92,11 @@ def draw_csl():
 for k0, lst, color in zip(k0s, linestyles, colors):
 	draw_dev(k0, lst, color)
 
+# Capture K0 cyclic handles before adding the CSL line, so the two
+# legends can be placed independently.
+k0_handles = list(ax1.lines)
 draw_csl()
-# plt.annotate(r"$Dense\ state$" + "\n" + r"$CSR=0.200$",
-#  xy=(5, 75), fontsize=13)
-plt.annotate(r"$CSR=0.200$",
- xy=(80, 80), fontsize=FS_ANN)
+csl_handle = ax1.lines[-1]
 
 ax1.set_xlim(0.0, 110.0)
 ax1.set_ylim((-0, 100))
@@ -105,7 +106,15 @@ ax1.grid(axis='y',which='minor',color='grey',linestyle='--',
 	lw=0.35,alpha=0.8)
 ax1.set_ylabel(r'$Deviatoric\ stress\ q\ (kPa)$', fontsize=FS_LABEL)
 ax1.set_xlabel(r'$Mean\ effective\ stress\ p\prime\ (kPa)$', fontsize=FS_LABEL)
-ax1.legend(fontsize=FS_LEGEND, framealpha=0.5, loc='upper left')
+# K0 cyclic legend (with CSR shown as the title) at upper-left;
+# CSL legend at upper-right where the wedge between cyclic data and
+# the CSL line is empty.
+legend_k0 = ax1.legend(handles=k0_handles, fontsize=FS_LEGEND,
+	framealpha=0.5, loc='upper left',
+	title=r"$CSR=0.200$", title_fontsize=FS_LEGEND)
+ax1.add_artist(legend_k0)
+ax1.legend(handles=[csl_handle], fontsize=FS_LEGEND,
+	framealpha=0.5, loc='upper right')
 ax1.tick_params(axis='both', which='major', labelsize=FS_TICK)
 
 plt.tight_layout()

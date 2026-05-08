@@ -65,6 +65,18 @@ papers/*/ref/*.pdf
 papers/*/build/
 pdf_outputs/
 
+# Submission archives (full bundles uploaded to EM; regenerable from source)
+papers/cg-coupled-servo/submission-r1/
+papers/cg-coupled-servo/submission-r1.zip
+
+# latexdiff workspace auxiliary copies (class/style/bib clones, backups)
+papers/*/diff/cas-*.cls
+papers/*/diff/cas-*.sty
+papers/*/diff/cas-*.bst
+papers/*/diff/refs.bib
+papers/*/diff/figures/
+papers/*/diff/*.bak
+
 # Data files
 *.csv
 

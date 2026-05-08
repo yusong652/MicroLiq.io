@@ -221,13 +221,22 @@ Framed as a two-part argument:
 
 **Comment:** N_L decreases monotonically with K₀ in Figs 8, 10; but Fig 12 shows K₀=1.0 *enhancement*. Explain.
 
-**Response plan:** Add 1–2 sentences: isotropic consolidation produces no preferred force-chain direction → contact normals distribute more uniformly → slightly higher Z_m0. Reaffirm Z_m0 alone is insufficient to predict N_L; α is needed (already stated).
+**Data verification (CSR=0.300, Dr=90%):** Z_m0: K0=0.5→4.894, K0=0.67→4.967, K0=1.0→4.978 (peak), K0=1.5→4.965, K0=2.0→4.885 vs N_L monotonically decreasing 11.03→10.03→9.52→9.02→8.54. The two rankings are genuinely different — not a plotting artefact, and not a normalization artefact (the K0=1.0-on-top observation is on the y-axis, independent of x-axis choice). Removing N/N_L normalization would not address the reviewer's concern and would degrade the figure's comparative-decay function.
+
+**Strategy — forecast + brief hint at Fig 12, not full duplication:**
+
+The full resolution is already in §3.2 (Fig:fabric_liq_pair, Fig:fabric_mechanism, Table:fabric_diagonal — the last two extended under R2.7). The reviewer's concern is a reading-order gap: the apparent paradox is visible at Fig 12 (~line 144) but the explanation lives ~140 lines later (~line 287). Fix is a 2-sentence forecast at Fig 12:
+
+1. Acknowledge: K0=1.0 has highest Z_m0 but is not the highest N_L (cross-ref Fig:liq_resistance_curves)
+2. One-clause physical hint: Z_m counts contacts isotropically; resistance depends additionally on directional partitioning + forward ref to §3.2 (Fig:fabric_liq_pair, Fig:fabric_mechanism)
+
+Don't duplicate the full quantitative argument — preserves the §3.2 build-up Z_m (insufficient) → α (necessary) → Φ^f (dominant).
 
 **Effort:** S
 
-**Target:** `03_results` §3.2 Fig 12 discussion paragraph
+**Target:** `03_results` Section subsec:micro_fabric_results — Fig:zm_evolution discussion paragraph (~line 144)
 
-**Status:** ⬜
+**Status:** ✅ (2026-04-30) — 1-sentence forecast added at Fig:zm_evolution paragraph; letter R1.8 drafted with explicit data values (Z_m0 vs N_L tables) + physical reasoning (count vs directional partitioning) + cross-references to fabric_liq_pair and fabric_mechanism
 
 ---
 
@@ -328,7 +337,7 @@ Closing: $\mu_{pw}=0$ (i) preserves principal-stress assumption radial+axial, (i
 
 **Target:** `03_results` §3.2 near Fig 14
 
-**Status:** 🟥 confirm data availability for post-processing
+**Status:** ✅ (2026-04-27, commit a737dca; letter updated 2026-04-30) — two-prong delivery: (i) new 8-panel normal-force rose Fig. \ref{fig:contact_force_sequence} annotated with $(A_n, B_n, \langle F_n\rangle)$ per panel via `anisotropy_values.py`; (ii) dual-axis upgrade to Fig. \ref{fig:fabric_mechanism} overlaying $1-\Phi_{rr}$ and $1-\Phi^f_{rr}$ across the full 10-case expanded dataset (5 K_0 × 2 D_r), backed by new Appendix C Table \ref{tab:fabric_diagonal}. Key finding: ~9× sensitivity gap between count- and force-weighted fabric (1.5% vs 14% across K_0 = 0.5→2.0), identifying the load-bearing subnetwork as the dominant carrier of the K_0-dependent liquefaction signal. New Eq. \eqref{eq:fabric_tensor_force} for $\Phi^f_{ij}$; \citet{Zhou2022} added.
 
 ### R2.8 — Fig 15 quantitative differences
 
@@ -340,7 +349,7 @@ Closing: $\mu_{pw}=0$ (i) preserves principal-stress assumption radial+axial, (i
 
 **Target:** Fig 15 caption / new panel
 
-**Status:** ⬜
+**Status:** ✅ (2026-04-30) — both sub-questions answered through the R2.7 force-rose annotations; no separate R2.8 figure. (i) Force-chain at N/N_L = 1.05 and 1.07: $A_n = 0.18$ vs.\ 0.20, $B_n = 45^\circ$ vs.\ $43^\circ$, $\langle F_n\rangle \approx 0.16$\,N for both — quantitatively confirms the visual indistinguishability. (ii) Displacement at N/N_L = 0.00 and 0.61: explicitly reframed in letter — pre-liquefaction displacement similarity is part of the finding, not missing discrimination; the quantitative discriminator at the same instants is the force-fabric tilt $B_n$ (1° vs 90° at 0.00; 15° vs 83° at 0.61), which the rose annotations now expose directly. Earlier-draft TODO for displacement CDF dropped — would have re-quantified what was inherently small and similar, while the force-rose answers the underlying question.
 
 ---
 
@@ -377,7 +386,7 @@ Closing: $\mu_{pw}=0$ (i) preserves principal-stress assumption radial+axial, (i
 
 Run these checks before declaring the letter final and building the submission PDF. Do NOT do them mid-task while manuscript text is still shifting.
 
-- [ ] **Line-number pointers in the letter.** The letter currently refers to changes via `Section~\ref{...}`, `Fig.~\ref{...}`, and `Table~\ref{...}`. Once the revised manuscript body is frozen, augment each `\changed{...}` entry (and selected inline references) with concrete manuscript line-number pointers using the `\manref{p.~X, l.~Y}` helper already defined in the letter preamble, so reviewers can jump directly to the changed text without searching the section. Do a final `latexmk` build of `main.tex` first to lock the line numbering.
+- [x] **Line-number pointers in the letter.** ✅ (2026-05-01) — `\manref{p.~X, l.~Y}` added to every `\changed{}` block (R1.1–R1.8, R2.1–R2.8) and to M1–M5 in Additional minor clarifications, anchored against `build/main.pdf` (lineno-active). Lookup table built from `pdftotext -layout build/main.pdf` and the page-footer scan; key anchors include §2.1 boundary taxonomy (p.~3, l.~112–132), §2.2 prep (p.~4, l.~136–149), §2.3 servo (p.~7–8, l.~186–242), §2.4 cyclic program + Table 2 (p.~9, l.~262–270), §2.5 verification + Fig.~7 (p.~10, l.~272–301), §2.6 critical-state determination (p.~11, l.~326–335), §3.3 fabric (p.~17–22), §3.4 force-fabric implication (p.~22–23, l.~567–571), Appendix C Table 4 (p.~28). Page numbering will need re-checking if the manuscript body shifts before final submission.
 - [ ] **`latexdiff` vs `submitted-r0` tag** regenerated against the final manuscript.
 - [ ] **Bibliography sanity pass** — verify all new `\citep{...}` keys resolve in `refs.bib` and that no entries added during revision contain placeholder titles / years.
 - [ ] **Figure / table numbers** referenced in the letter match the final compiled manuscript (numbering can shift when new tables/figures are inserted).

@@ -8,12 +8,14 @@
 \usepackage{framed}
 \usepackage{soul}
 \usepackage{amsmath,amssymb}
+\usepackage{bm}
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage[authoryear,round]{natbib}
 \usepackage{xr-hyper}
 \usepackage{graphicx}
 \usepackage{placeins}    % provides \FloatBarrier to keep figures in section
+\usepackage[capitalize,noabbrev]{cleveref}  % \cref for multi-target refs (M1, M4, M5)
 
 \hypersetup{
   colorlinks=true,
@@ -51,8 +53,20 @@
 % Author's response: normal style, marked with a bold tag
 \newcommand{\response}{\par\noindent\textbf{Response:}\ \ignorespaces}
 
-% Manuscript change pointer
-\newcommand{\changed}[1]{\par\noindent\textbf{Manuscript changes:}\ #1\par}
+% Manuscript change pointer (high-level roadmap; the verbatim excerpt
+% is shown separately below in the \begin{revtext}...\end{revtext} block)
+\newcommand{\changed}[1]{\par\noindent\textbf{Summary of manuscript changes:}\ #1\par}
+
+% Revised manuscript text: light-blue left bar, distinguishes the
+% actual added/rewritten manuscript text from the response prose.
+% Use after \changed{} to show the new text inline so the reviewer
+% does not have to consult the latexdiff PDF.
+\definecolor{revtextbar}{rgb}{0.20,0.40,0.70}
+\definecolor{revtextbg}{rgb}{0.94,0.96,1.00}
+\newenvironment{revtext}
+  {\par\vspace{0.2em}\noindent\textit{Revised manuscript text:}\par
+   \begingroup\color{black}\begin{leftbar}\small}
+  {\end{leftbar}\endgroup\vspace{0.3em}}
 
 % Cross-reference helpers
 \newcommand{\manref}[1]{(#1)}                  % e.g., \manref{p.~4, l.~112}
@@ -85,52 +99,13 @@
 
 \maketitle
 
-\section*{Cover letter}
-
-Dear Editor,
-
-Thank you for the opportunity to revise our manuscript
-``\emph{Influence of Initial Stress Anisotropy on Liquefaction Resistance
-in Undrained Cyclic Torsional Shear: DEM Simulation of Hollow Cylinder
-Tests}'' (COMGE-D-26-01109) submitted to
-\emph{Computers and Geotechnics}. We sincerely thank both reviewers for their
-thoughtful and constructive comments, which have helped us to substantially
-improve the manuscript.
-
-We have carefully addressed every comment. A point-by-point response is
-provided below. In the revised manuscript, added or modified text is marked
-using \texttt{latexdiff} against the submitted version (also provided).
-
-%% -------- Summary of major changes --------
-
-\section*{Summary of major revisions}
-
-\begin{itemize}[leftmargin=*]
-  \item \textbf{Clarified the relative-density labels}
-    ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' as
-    behaviour-matched references to the Toyoura density states
-    reported by \citet{Nakata1998} and \citet{Ishihara1985}, rather
-    than values computed from the DEM void ratio via the textbook
-    formula.
-  \item \textbf{Expanded the Introduction} with a review of prior DEM-HCA
-    models and the boundary-condition taxonomy (rigid wall, stacked wall,
-    flexible membrane).
-  \item \textbf{Added a consolidated case table} listing all
-    ($D_r$, $\Kzero$, CSR) combinations and the resulting $N_L$.
-  \item \textbf{Added a quantitative quasi-static check} through the
-    inertial number.
-  \item \textbf{Added contact-force anisotropy analysis} to complement the
-    existing contact-density analysis.
-  \item \textbf{Quantified the differences} between specimens in
-    Fig.~15 (now \figref{16}) via the new normal-force rose
-    (\figref{15}), which reports the force-fabric deviator $A_n$,
-    principal-direction tilt $B_n$, and specimen-mean
-    $\langle F_n\rangle$ for each panel.
-  \item Minor clarifications and additional references throughout.
-\end{itemize}
-
-All line and figure numbers below refer to the revised manuscript unless
-noted otherwise.
+We sincerely thank both reviewers for their thoughtful and constructive
+comments. A summary of the major revisions, together with the editor's
+cover letter, is provided in the accompanying cover-letter document; the
+detailed point-by-point response follows below. In the revised manuscript,
+added or modified text is marked using \texttt{latexdiff} against the
+submitted version (also provided). All line and figure numbers below refer
+to the revised manuscript unless noted otherwise.
 
 \clearpage
 
@@ -265,12 +240,32 @@ independent considerations.
 Taken together, these considerations support the adequacy of the
 present size configuration for the quantities reported in this study.
 
-\changed{In the revised manuscript we have (i) added citations to
-\citet{Shi2021} and \citet{Song2024} in the Introduction's DEM
-paragraph (Section~\ref{sec:introduction}) in support of this
-response, and (ii) added a brief note in
-Section~\ref{subsec:dem_hca} citing \citet{Song2024} as precedent
-for the 10$\times$ scaling of the Toyoura-sand grading.}
+\changed{Section~\ref{subsec:dem_hca} \manref{p.~3, l.~125--131}: two
+sentences added immediately after the 10$\times$ scaling clause,
+stating the specimen-to-$d_{\max}$ ratios in all three directions,
+citing the codified 6:1 threshold and the Huang--Kuhn precedents,
+and recording the radial size ratios used by \citet{Shi2021},
+\citet{Liu2021}, and \citet{Song2024} as DEM-HCA precedents in the
+same range. (These three works also appear in the expanded
+Introduction DEM-HCA paragraph under R2.4, grouped by radial
+boundary treatment.)}
+
+\begin{revtext}
+[\ldots] a scaling approach commonly adopted in DEM simulations of this
+sand to reduce particle count while preserving the non-dimensional
+grading \citep{Song2024}. \textbf{The resulting specimen-to-$d_{\max}$
+ratios are 6.7 (radial), 33 (axial), and 84 (mid-radius
+circumferential), satisfying the 6:1 minimum stipulated by
+\citet{ASTM_D7181,ASTM_D4767} and consistent with prior DEM studies
+reporting weak size-ratio sensitivity of end-state and
+cyclic-liquefaction responses at comparable ratios
+\citep{Huang2014,KuhnRenken2014}. Prior DEM-HCA studies have adopted
+radial size ratios in the same range (7.5 in \citealt{Shi2021}; 7.2
+in \citealt{Liu2021}; \citealt{Song2024} used the same 60/100~mm
+geometry on upscaled Toyoura sand with a scaling factor somewhat
+larger than the 10$\times$ adopted here).} The DEM parameters are
+summarized in Table~\ref{tab:dem_parameters}. [\ldots]
+\end{revtext}
 
 \FloatBarrier
 
@@ -330,18 +325,49 @@ Rather than computing $D_r$ from the DEM void ratio, we tuned the target void ra
 \item \textbf{Use of $D_r$-based labels.}
 \begin{enumerate}[leftmargin=2em,label=(\alph*),topsep=2pt,itemsep=3pt]
   \item \emph{Convention.} The laboratory data we calibrate against use $D_r$ as the primary specimen label, including \citet{Ishihara1985}'s ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) bands. Following the same convention keeps the cross-reference legible to readers of that literature.
-  \item \emph{Read as bands, not point values.} Lab $D_r$ is intrinsically a range; \citet{Ishihara1985} explicitly reports ``\emph{a range of $\pm 3.5\%$ around the average}'' (p.~68). Our ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' labels track Ishihara's bands, not exact percentages.
+  \item \emph{Read as bands, not point values.} Lab $D_r$ is intrinsically a range; \citet[p.~68]{Ishihara1985} explicitly reports ``\emph{a range of $\pm 3.5\%$ around the average}''. Our ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' labels track Ishihara's bands, not exact percentages.
   \item \emph{DEM has no run-to-run variability.} Specimen generation is deterministic and reproducible, so every run of a given preset starts from an identical void ratio. We therefore report a single void ratio per specimen rather than a band, even though the matching laboratory condition spans one.
 \end{enumerate}
 \end{enumerate}
 
 \changed{
 \begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=2pt]
-  \item Section~\ref{subsec:preparation}: clarified that DEM void ratios cannot be mapped onto Toyoura's textbook $D_r$, owing to the spherical particle shape and the absence of a standardised DEM packing-limit procedure.
-  \item Section~\ref{subsec:preparation}: the labels ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' are now stated as behaviour-matched references to Ishihara's ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) density bands.
-  \item Sections~\ref{subsec:calibration_validation} and \ref{subsec:numerical_verification}, and the caption of Fig.~\ref{fig:validation_combined}: the previous ``dense''/``medium-dense'' verbal labels are replaced by ``very dense''/``dense'', aligning with Ishihara's terminology and removing the wording prone to misreading.
+  \item Section~\ref{subsec:preparation} \manref{p.~3--4, l.~149--152}: clarified that DEM void ratios cannot be mapped onto Toyoura's textbook $D_r$, owing to the spherical particle shape and the absence of a standardised DEM packing-limit procedure.
+  \item Section~\ref{subsec:preparation} \manref{p.~4, l.~152--155}: the labels ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' are now stated as behaviour-matched references to Ishihara's ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense'' ($D_r = 75\!-\!82\%$) density bands.
+  \item Sections~\ref{subsec:cyclic_program} \manref{p.~10, l.~278--279} and \ref{subsec:calibration_validation} \manref{p.~11, l.~314} and the caption of Fig.~\ref{fig:validation_combined} \manref{p.~12}: the previous ``dense''/``medium-dense'' verbal labels are replaced by ``very dense''/``dense'', aligning with Ishihara's terminology and removing the wording prone to misreading.
 \end{enumerate}
 No figure changes in the main manuscript.}
+
+\begin{revtext}
+[\ldots] First, the assembly is compressed under zero interparticle
+friction to a target void ratio, determined through the iterative
+calibration procedure described in
+Section~\ref{subsec:calibration_validation}: approximately 0.736 for
+the very dense state and 0.742 for the dense state.
+\textbf{Because the DEM particles are spherical (in contrast to the
+subrounded-to-subangular grains of real Toyoura sand) and because no
+standardised procedure exists for determining the packing limits
+$(e_{\max}, e_{\min})$ of a DEM assembly, these void ratios are not
+converted to a relative density through the textbook formula with
+laboratory Toyoura limits. The labels ``$D_r \approx 90\%$'' and
+``$D_r \approx 75\%$'' are instead used as behaviour-matched
+references to the ``very dense'' ($D_r = 88\!-\!95\%$) and ``dense''
+($D_r = 75\!-\!82\%$) density bands of \citet{Ishihara1985}: the DEM
+target void ratios are tuned so that the macroscopic monotonic and
+cyclic responses reproduce those observed in the laboratory at the
+corresponding $D_r$ conditions} (Section~\ref{subsec:calibration_validation}).
+[\ldots]
+\end{revtext}
+
+\noindent\emph{Terminology relabel} (representative excerpt from the
+caption of Fig.~\ref{fig:validation_combined}; analogous edits apply
+to Sections~\ref{subsec:numerical_verification} and
+\ref{subsec:calibration_validation}):
+\begin{revtext}
+Calibration and validation of the DEM-HCA model for \textbf{very
+dense} Toyoura sand ($D_r \approx 90\%$, $\pmean_0=\SI{100}{kPa}$,
+\Kzero{} = 1.0) [\ldots]
+\end{revtext}
 
 %% ---------------- R1.3 ----------------
 \subsection*{R1.3 --- Missing formulas for CSR and $\Kzero$}
@@ -352,21 +378,41 @@ Such as CSR, $\Kzero$.
 \end{rcomment}
 
 \response
-Both ratios are now defined inline where each symbol first appears
-in Section~\ref{subsec:preparation}. $\Kzero$ is introduced at the
+We thank the reviewer for catching these missing definitions. Both
+ratios are now defined inline where each symbol first appears.
+$\Kzero$ is introduced in Section~\ref{subsec:preparation} at the
 opening of the IC--AC consolidation protocol as the ratio of radial
 to vertical effective stresses,
 $\Kzero = \sigma_r^{\prime}/\sigma_z^{\prime}$; and CSR is introduced
-at the opening of the cyclic shear program as the amplitude of
-cyclic shear stress normalised by the initial mean effective stress,
+in Section~\ref{subsec:cyclic_program} at the opening of the cyclic
+shear program as the amplitude of cyclic shear stress normalised by
+the initial mean effective stress,
 $\mathrm{CSR} = \tau_{cyc}/p_0^{\prime}$. Both definitions
 cross-reference Table~\ref{tab:hca_equations}, which collects the
 full set of HCA stress and strain expressions.
 
-\changed{Inline definitions of $\Kzero$ and $\mathrm{CSR}$ added in
-Section~\ref{subsec:preparation} (IC--AC protocol opening and
-cyclic-shear program opening, respectively), with cross-references
-to Table~\ref{tab:hca_equations}.}
+\changed{Inline definitions added: $\Kzero$ in
+Section~\ref{subsec:preparation} (IC--AC protocol opening
+\manref{p.~3, l.~146--147}) and $\mathrm{CSR}$ in
+Section~\ref{subsec:cyclic_program} (cyclic-shear program opening
+\manref{p.~9, l.~272--273}), with cross-references to
+Table~\ref{tab:hca_equations}.}
+
+\begin{revtext}
+[\ldots] Specimens are prepared using an isotropic-consolidation to
+anisotropic-consolidation (IC--AC) protocol, with the consolidation
+anisotropy characterized by the \textbf{lateral-to-vertical effective
+stress ratio $\Kzero = \sigma_r^{\prime}/\sigma_z^{\prime}$, where
+$\sigma_r^{\prime}$ and $\sigma_z^{\prime}$ are the radial and
+vertical effective stresses} (Table~\ref{tab:hca_equations}). [\ldots]
+\medskip
+
+[\ldots] Cyclic loading is sinusoidal,
+$\tau_{z\theta}(t) = \tau_{cyc}\sin(2\pi f t)$, at frequency
+$f = \SI{8}{Hz}$, with the \textbf{cyclic stress ratio defined as
+$\mathrm{CSR} = \tau_{cyc}/p_0^{\prime}$ ($p_0^{\prime}$ the initial
+mean effective stress after consolidation)}. [\ldots]
+\end{revtext}
 
 %% ---------------- R1.4 ----------------
 \subsection*{R1.4 --- Consolidated case table}
@@ -380,8 +426,9 @@ format.
 \end{rcomment}
 
 \response
-A consolidated table has been added at the end of
-Section~\ref{subsec:preparation} (Table~\ref{tab:case_matrix} of
+We thank the reviewer for this helpful suggestion. A consolidated
+table has been added at the end of
+Section~\ref{subsec:cyclic_program} (Table~\ref{tab:case_matrix} of
 the revised manuscript, reproduced as Table~\ref{tab:rl_case_matrix}
 below). Each row identifies a $(D_r, \Kzero)$ combination; the
 third column enumerates the CSR levels tested for that case. The
@@ -416,13 +463,14 @@ that the methodology table itself remains free of outcome data.
     \bottomrule
   \end{tabular}\\[2pt]
   \begin{minipage}{0.95\linewidth}
-    \footnotesize $^{\dagger}$\,Numerical-verification case (Section~\ref{subsec:numerical_verification} of the revised manuscript), run under the constant-total-axial-stress axial boundary so that the full $2{\times}2$ coupled servo is exercised.
+    \footnotesize $^{\dagger}$\,Numerical-verification case (Section~\ref{subsec:numerical_verification} of the revised manuscript), run under the constant-total-axial-stress axial boundary.
   \end{minipage}
 \end{table}
 
-\changed{New Table~\ref{tab:case_matrix} inserted at the end of
-Section~\ref{subsec:preparation}, summarising the full simulation
-program with CSR levels enumerated for each $(D_r, \Kzero)$ case.}
+\changed{New Table~\ref{tab:case_matrix} \manref{p.~10} inserted at
+the end of Section~\ref{subsec:cyclic_program}, summarising the full
+simulation program with CSR levels enumerated for each
+$(D_r, \Kzero)$ case.}
 
 %% ---------------- R1.5 ----------------
 \subsection*{R1.5 --- Loading rate / quasi-static condition}
@@ -446,7 +494,7 @@ in a new methodology subsection.
 The cyclic torsional shear is sinusoidal,
 $\tau_{z\theta}(t) = \tau_{cyc}\sin(2\pi f t)$, at frequency
 $f=\SI{8}{Hz}$. This value has been added to
-Section~\ref{subsec:preparation} of the revised manuscript at the
+Section~\ref{subsec:cyclic_program} of the revised manuscript at the
 first definition of CSR.
 
 \item \textbf{Inertial number.}
@@ -521,20 +569,46 @@ above. If the loading were dynamically distorted, this combined
 agreement would not be expected.
 \end{enumerate}
 
-\changed{Section~\ref{subsec:preparation}: the loading frequency
-$f=\SI{8}{Hz}$ and the explicit waveform
+\changed{Section~\ref{subsec:cyclic_program} \manref{p.~9, l.~271--272}: the
+loading frequency $f=\SI{8}{Hz}$ and the explicit waveform
 $\tau_{z\theta}(t)=\tau_{cyc}\sin(2\pi f t)$ are now stated at the
 first appearance of CSR. A new
-Section~\ref{subsec:numerical_verification} (``Numerical verification
-of the coupled servo'') has been added at the end of the methodology,
-with Fig.~\ref{fig:numerical_verification} reporting the volume drift,
-servo tracking errors, and inertial number throughout a representative
-post-liquefaction run; the inertial-number panel and accompanying
-prose discuss the GDR-MiDi and da Cruz reference values, the
-$96.9\%$ / $100\%$ pre-liquefaction compliance, and the physical
+Section~\ref{subsec:numerical_verification} \manref{p.~10--11, l.~282--311}
+(``Numerical verification of the coupled servo'') has been added at
+the end of the methodology, with
+Fig.~\ref{fig:numerical_verification} \manref{p.~11} reporting the
+volume drift, servo tracking errors, and inertial number throughout
+a representative post-liquefaction run; the inertial-number panel and
+accompanying prose discuss the GDR-MiDi and da Cruz reference values,
+the $96.9\%$ / $100\%$ pre-liquefaction compliance, and the physical
 origin of the post-liquefaction $I$ excursion. References
 \citet{GDRMiDi2004}, \citet{daCruzEmam2005}, and
 \citet{Wang2025inertial} have been added to the bibliography.}
+
+\begin{revtext}
+[\ldots] The cyclic shear simulation program consists of a verification
+case and a parametric \Kzero{} study. \textbf{Cyclic loading is
+sinusoidal, $\tau_{z\theta}(t) = \tau_{cyc}\sin(2\pi f t)$, at
+frequency $f = \SI{8}{Hz}$}, with the cyclic stress ratio defined as
+$\mathrm{CSR} = \tau_{cyc}/p_0^{\prime}$ [\ldots]
+\medskip
+
+\textit{(New paragraph in Section~\ref{subsec:numerical_verification},
+``Quasi-static condition''):} The inertial number
+$I=|\dot\gamma_{z\theta}|\,d_{50}\sqrt{\rho_s/\pmean}$ [\ldots]
+\textbf{In the present run, the representative value $I < 10^{-2}$
+is satisfied for the entire pre-liquefaction stage ($N_c/N_L < 1$,
+$\ru < 0.95$), and the strict threshold $I < 10^{-3}$ is satisfied
+throughout $96.9\%$ of that stage.} The remaining $\sim 3\%$
+excursion above $10^{-3}$ is confined to the final cycle before
+liquefaction [\ldots] \textbf{After liquefaction, $I$ rises further
+to peak values of order $10^{-2}$, an unavoidable physical
+consequence of the vanishing mean effective stress in the
+inertial-number definition that is shared with laboratory undrained
+cyclic tests \citep{Wang2025inertial}}; the strict quasi-static
+interpretation of $I$ does not apply in this regime in either the
+simulation or the laboratory. [\ldots]
+\end{revtext}
 
 \FloatBarrier
 
@@ -551,81 +625,94 @@ boundaries and justify their use with relevant references.
 \end{rcomment}
 
 \response
-We thank the reviewer for raising this point. We agree that rigid
-cylindrical walls do not reproduce every aspect of the laboratory
-latex membrane, and the concerns the reviewer lists --- restricted
-local deformation, suppressed shear-band development, and potentially
-overestimated stiffness --- are well established in the \emph{drained}
-HCA testing literature, where the membrane locally accommodates the
-specimen's dilative or contractive response at developing localisation
-sites. The choice of rigid cylindrical walls for the present
-\emph{undrained} application rests on the following considerations.
+We thank the reviewer for raising this point. The concerns the
+reviewer lists --- restricted local deformation, suppressed
+shear-band development, and potentially overestimated stiffness ---
+arise primarily from \emph{drained} HCA testing, where the membrane
+locally accommodates the specimen's dilative or contractive response
+at developing localisation sites. Under \emph{undrained} loading,
+however, the boundary physics is fundamentally different: water
+incompressibility imposes a sealed constant-volume condition that
+the membrane cannot relax. The choice of rigid cylindrical walls is
+required by this physics for the following reasons.
 
 \begin{enumerate}[leftmargin=*,label=(\arabic*),topsep=4pt,itemsep=6pt]
-\item \textbf{No flexible-membrane DEM-HCA formulation to date
-enforces a sealed constant-volume boundary.}
-The flexible bonded-sphere membrane developed by \citet{Song2024} and
-extended by \citet{Song2024suffusion} is the most advanced DEM
-analogue of a laboratory latex membrane to date. Both formulations,
-however, operate under open, stress-controlled boundary conditions
-rather than under a sealed constant-volume condition. \citet{Song2024}
-applies drained torsional shear by prescribing the cell pressures
-acting on the membrane particles directly; \citet{Song2024suffusion}
-extends the same flexible-membrane DEM with a CFD solver to drive
-seepage flow through the specimen between explicit inlet and outlet
-boundaries under a prescribed hydraulic gradient, with the confining
-pressure held fixed throughout. In neither case is the specimen-total
-volume constrained; the fluid phase, where present, resolves seepage
-flow through the specimen rather than enforcing volume conservation
-of a sealed sample. To our knowledge, no flexible-membrane DEM
-formulation currently enforces the sealed constant-volume boundary
-that undrained cyclic loading requires; doing so would demand
-additional global kinematic constraints superimposed on the membrane
-degrees of freedom. The rigid-wall servo used here is therefore not a
+\item \textbf{Undrained physics requires a sealed constant-volume
+boundary; the rigid-wall servo is the available DEM construct that
+enforces it.}
+The laboratory HCA specimen is sealed against drainage, and pore
+water is essentially incompressible, so specimen-total volume is
+fixed by water conservation regardless of membrane flexibility; the
+latex membrane acts only as a pressure interface, not as a
+volumetric degree of freedom. The DEM analogue is a global volume
+constraint on the specimen boundary, which the present rigid-wall
+servo imposes directly at every timestep
+(Section~\ref{subsec:cyclic_loading}). Existing flexible-membrane
+DEM-HCA formulations \citep{Song2024,Song2024suffusion} were
+developed for drained and open-seepage loading, with cell pressure
+(or pore-fluid flow) prescribed rather than specimen volume; to our
+knowledge, none currently enforces the sealed constant-volume
+boundary required here. The rigid-wall-plus-servo configuration is
+therefore required by the physics rather than chosen as a
 simplification of a readily available flexible-membrane alternative.
 
-\item \textbf{In undrained loading, the dominant boundary physics
-is global volume conservation, which the rigid-wall servo enforces
-directly.}
-The laboratory HCA specimen is sealed against drainage, and the pore
-water is essentially incompressible at the pressures of interest. The
-latex membrane is therefore backed by an incompressible fluid, so the
-specimen-total volume is fixed by water conservation irrespective of
-membrane flexibility; the membrane serves as a pressure interface
-that transmits cell pressure to the grain skeleton, but cannot
-contribute net volume change. The DEM analogue of this physics is a
-global volume constraint on the specimen boundary, which the present
-servo imposes directly at every timestep
-(Section~\ref{subsec:cyclic_loading}). In this sense the rigid-wall-
-plus-servo configuration is the direct match to the undrained
-boundary condition, whereas the flexible membrane is the direct
-match to the drained condition.
-
-\item \textbf{Scope and limitation.}
-Rigid walls do suppress boundary-local heterogeneity that a flexible
-membrane would accommodate: even under a global volume constraint, a
-laboratory specimen can develop spatially non-uniform deformation at
-the membrane surface, whereas the DEM walls enforce uniform radial
-positions. The present work reports specimen-averaged quantities ---
-liquefaction-resistance curves and integrated fabric descriptors
-$Z_{m0}$, $F_c$, $\rho_c$ --- that are insensitive to this class of
-boundary heterogeneity. Extending the analysis to localisation
-features would benefit from a future flexible-boundary treatment
-coupled to an incompressible fluid phase, which we note as a
-direction for future work.
+\item \textbf{Loading-strain range and validation against laboratory
+data.}
+The cyclic torsional shear is applied in the $(z,\theta)$ plane,
+whereas the rigid-wall constraint acts in the orthogonal radial
+direction (cf.\ R1.1). The reviewer's concerns regarding restricted
+local deformation and suppressed shear-band development are
+characteristic of the regime in which strain localisation develops,
+whereas the present liquefaction analysis
+terminates at single-amplitude shear strain $\gamma_{SA} = 2.5\%$,
+an order of magnitude smaller than the deviatoric strains at which
+strain localisation typically develops in laboratory sand under
+monotonic shear \citep[e.g.,][]{DesruesViggiani2004}. Stress--strain
+agreement with laboratory Toyoura sand has been verified across
+this range under both monotonic and cyclic loading: the calibrated
+specimen reproduces the undrained monotonic torsional-shear response
+of \citet{Nakata1998} up to $\varepsilon_q \approx 5\%$ and the
+cyclic CSR--$N_L$ curve of \citet{Ishihara1985} at the
+$\gamma_{SA} = 2.5\%$ liquefaction criterion across the full CSR
+range (Section~\ref{subsec:calibration_validation}). This
+consistency with laboratory data under both loading modes
+indicates that any
+influence of the rigid-wall boundary on the macroscopic strength
+is limited within the strain range that brackets the present
+analysis; spatially resolved analysis of localisation features lies
+outside the present scope.
 \end{enumerate}
 
-\changed{Section~\ref{subsec:dem_hca}: a short paragraph has been
-added at the end of the wall-configuration description, framing the
-rigid cylindrical walls as the direct implementation of the undrained
-constant-volume boundary via the servo, and noting that existing
-flexible-membrane DEM-HCA formulations address drained
-(\citealp{Song2024}) and open-boundary seepage
-(\citealp{Song2024suffusion}) loading respectively, neither of which
-enforces the sealed constant-volume condition required for undrained
-cyclic loading. Boundary-local heterogeneity suppressed by the rigid
-walls is acknowledged as a limitation of the specimen-averaged scope
-in the discussion section.}
+\changed{Section~\ref{subsec:dem_hca} \manref{p.~3, l.~111--118}:
+a short paragraph has been added at the end of the wall-configuration
+description, framing the rigid cylindrical walls as the direct
+implementation of the undrained constant-volume boundary via the
+servo, and noting that existing flexible-membrane DEM-HCA formulations
+were developed for drained (\citealp{Song2024}) and open-seepage
+(\citealp{Song2024suffusion}) loading.
+\citet{DesruesViggiani2004} added to the bibliography (cited in
+this response letter, item~(2) above).}
+
+\begin{revtext}
+\textit{(End of wall-configuration paragraph,
+Section~\ref{subsec:dem_hca}):} [\ldots] \textbf{Unlike element-level
+periodic-cell DEM, which models a representative volume rather than
+an apparatus, and unlike recent flexible-membrane DEM-HCA
+formulations \citep{Song2024,Song2024suffusion} developed for drained
+and open-seepage loading}, the present model uses rigid cylindrical
+walls (inner and outer cylinders, top and bottom planes) with six
+torsional blades to apply shear.
+\medskip
+
+\textbf{The undrained condition is reproduced by enforcing constant
+specimen volume directly through the rigid-wall servo at every
+timestep (Section~\ref{subsec:cyclic_loading}). This is the same
+kinematic constraint that, in the laboratory, follows from the
+essentially incompressible pore fluid: the latex membrane transmits
+cell pressure to the grain skeleton but cannot change the specimen
+volume. Rigid walls are accordingly an effective DEM implementation
+of the undrained boundary.}
+\end{revtext}
 
 %% ---------------- R1.7 ----------------
 \subsection*{R1.7 --- Citation for CSL in Fig.~8(c)}
@@ -636,102 +723,66 @@ data or from someone else's literature, a clear citation is required.
 \end{rcomment}
 
 \response
-We thank the reviewer for raising this point. The dashed line in
-Fig.~\ref{fig:macro_response_c}(c) was drawn from our own DEM
-data, but the determination procedure deserves a fuller explanation
-than the submitted version provided.
+We thank the reviewer for raising this point. We agree that the
+dashed line in Fig.~\ref{fig:macro_response_c}(c) needs an explicit
+source.
 
-\begin{enumerate}[leftmargin=*,label=(\arabic*),topsep=4pt,itemsep=6pt]
-\item \textbf{Origin of the submitted CSL slope.}
-The dashed line in the submitted manuscript was inferred from the
-calibration monotonic-undrained-torsional-shear simulation
-(Section~\ref{subsec:calibration_validation}), which was set up to
-reproduce the laboratory torsional-shear data of
-\citet{Nakata1998} and was therefore terminated at the
-deviatoric-strain endpoint of those experiments
-($\varepsilon_q\approx 5\%$), at which $q/p^{\prime}$ is still
-approaching its asymptotic value rather than fully on a plateau.
-The reviewer's question prompted a dedicated determination taken
-to the plateau, which we describe below.
+On re-examining the slope used in the submitted version, we found
+it had been inferred from the endpoint of our calibration
+monotonic-undrained-torsional-shear simulation at
+$\varepsilon_q\approx 5\%$. This endpoint is not guaranteed to lie
+on the critical-state plateau---where $q/p^{\prime}$ has fully ceased
+to evolve with strain---so the slope inferred at that point cannot
+rigorously be presented as the critical-state slope. We have
+therefore replaced it with the literature value of
+\citet{VerdugoIshihara1996} for Toyoura sand. The figure caption
+now identifies the dashed line as the critical-state line at slope
+$M_{cs}\approx 0.892$, and the main text immediately following
+Fig.~\ref{fig:macro_response_c} states the citation together with
+the Mohr--Coulomb conversion to the present pure-shear loading.
 
-\item \textbf{Dedicated to-critical-state run.}
-We performed an additional monotonic undrained torsional
-shear simulation on the same calibrated $D_r\approx 90\%$ specimen,
-sheared continuously into the regime where $q/p^{\prime}$ stops
-evolving with strain. The slope is fit on the critical-state
-range $\varepsilon_q\in[20,40]\%$ (Fig.~\ref{fig:rl_csl}); the
-same figure has been added to the manuscript as
-Fig.~\ref{fig:csl_determination}.
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\linewidth]{figs/fig_r1_7.pdf}
-  \caption{CSL determination from a dedicated monotonic-undrained
-    torsional-shear DEM run on the calibrated $D_r\approx 90\%$
-    specimen ($p_0^{\prime}=\SI{100}{kPa}$, $\Kzero=1.0$).
-    (a)~Effective stress path in $p^{\prime}$--$q$ space; the red
-    segment marks the critical-state range
-    $\varepsilon_q\in[20,40]\%$ from which the CSL slope is fit, and
-    the dashed line is the resulting CSL $q=0.874\,p^{\prime}$.
-    (b)~Stress-ratio $q/p^{\prime}$ versus deviatoric strain
-    $\varepsilon_q$; the post-peak path settles onto a clean plateau
-    at $q/p^{\prime}=0.874\pm 0.018$, corresponding to
-    $\varphi_{cs}=30.3^{\circ}$ at HCA-torsional intermediate principal stress ratio
-    $b=0.5$.}
-  \label{fig:rl_csl}
-\end{figure}
-
-The plateau gives
-\[
-  M_{cs} = 0.874 \pm 0.018,
-  \qquad
-  \varphi_{cs} = 30.3^{\circ},
-\]
-where the Mohr--Coulomb relation
-$M_{cs}=\sqrt{3}\,\sin\varphi_{cs}$ applies because the HCA
-torsional boundary conditions impose pure-shear loading by
-construction (intermediate principal stress ratio $b=0.5$).
-
-\item \textbf{Comparison with literature.}
 The canonical drained-triaxial-compression dataset of
 \citet{VerdugoIshihara1996} for Toyoura sand reports a steady-state
-slope of $0.62$ in the $q/2$--$p^{\prime}$ plane (their Fig.~8),
-equivalent to $M_{TC}=q/p^{\prime}=1.24$ and a friction angle
-$\varphi_{ss}\approx 31^{\circ}$. Their measurement is at $b=0$
-rather than $b=0.5$, so comparison is most cleanly made through
-the friction angle: our $\varphi_{cs}=30.3^{\circ}$ agrees with
-their $31^{\circ}$ within $0.7^{\circ}$, and the
-triaxial-compression slope predicted from our $\varphi_{cs}$,
-$M_{TC}=6\sin\varphi_{cs}/(3-\sin\varphi_{cs})=1.21$, matches their
-measured $1.24$ within $\sim 2\%$. The $M_{cs}=0.874$ reported
-here is therefore the monotonic, pure-shear ($b=0.5$) critical-state
-slope; real granular materials exhibit a weak dependence of
-$\varphi_{cs}$ on the intermediate principal stress ratio that
-lies beyond the scope of this calibration.
+friction angle $\varphi_{cs}\approx 31^{\circ}$. Because their
+measurement is at intermediate principal stress ratio $b=0$ whereas
+the HCA torsional boundary conditions of the present work impose
+pure-shear loading by construction ($b=0.5$), the slope of the CSL
+in $p^{\prime}$--$q$ space is converted via the Mohr--Coulomb
+relation
+\[
+  M_{cs} = \sqrt{3}\,\sin\varphi_{cs}
+  \approx \sqrt{3}\,\sin(31^{\circ})
+  \approx 0.892,
+\]
+which is the value at which the dashed line in
+Fig.~\ref{fig:macro_response_c}(c) is drawn.
 
-\item \textbf{Quasi-static check.} The run is much faster in
-absolute terms than a laboratory test
-(mean $\dot\gamma\approx 2.3\,\mathrm{s^{-1}}$), but the inertial
-number $I=\dot\gamma\,d_{50}\sqrt{\rho_s/p^{\prime}}$ remains
-below $10^{-3}$ throughout
-($I\approx 7.6\times 10^{-4}$ at the initial
-$p^{\prime}=\SI{100}{kPa}$,
-$I\approx 2.1\times 10^{-4}$ on the plateau), placing the run
-squarely in the strict quasi-static regime
-per \citet{GDRMiDi2004}.
-\end{enumerate}
+\changed{Caption of Fig.~\ref{fig:macro_response_c}(c)
+\manref{p.~14}: the dashed line is now identified as the
+critical-state line at slope $M_{cs}\approx 0.892$ (with the
+attribution to \citet{VerdugoIshihara1996} and the Mohr--Coulomb
+conversion to $b=0.5$ stated in the main text immediately
+following the figure, Section~\ref{subsec:macro_response}
+\manref{p.~13, l.~391--393}).}
 
-\changed{Section~\ref{subsec:calibration_validation}: a paragraph
-has been added describing the dedicated to-critical-state
-simulation, reporting $M_{cs}=0.874$ and
-$\varphi_{cs}=30.3^{\circ}$ at HCA-torsional intermediate principal stress ratio
-$b=0.5$, and comparing with the drained-triaxial-compression
-$\varphi_{ss}\approx 31^{\circ}$ ($M_{TC}=1.24$) of
-\citet{VerdugoIshihara1996} for Toyoura sand. The dashed line in
-Fig.~\ref{fig:macro_response_c}(c) is now drawn at slope
-$M_{cs}=0.874$ and explicitly attributed to this dedicated DEM
-determination, in place of the slope previously inferred from the
-calibration-run endpoint.}
+\begin{revtext}
+\textit{Updated caption of Fig.~\ref{fig:macro_response_c}(c):}
+Deviatoric stress vs.\ $p^{\prime}$ for three \Kzero{} states;
+\textbf{the dashed line is the critical-state line at slope
+$M_{cs}\approx 0.892$ (see text)}.
+
+\medskip
+
+\textit{New main-text sentence accompanying
+Fig.~\ref{fig:macro_response_c}(c) in
+Section~\ref{subsec:macro_response}:}
+The dashed line shown in panel~(c) for reference is the
+\textbf{critical-state line at $M_{cs}\approx 0.892$, obtained
+from the steady-state friction angle
+$\varphi_{cs}\approx 31^{\circ}$ reported by
+\citet{VerdugoIshihara1996} for Toyoura sand via
+$M_{cs}=\sqrt{3}\sin\varphi_{cs}$ at $b=0.5$.}
+\end{revtext}
 
 %% ---------------- R1.8 ----------------
 \subsection*{R1.8 --- ``Enhancement'' of $\Kzero = 1.0$ in the coordination-number plane (Fig.~12)}
@@ -747,13 +798,75 @@ should be explained more clearly.
 \end{rcomment}
 
 \response
-\textit{[TODO: clarify physical cause --- isotropic consolidation distributes
-contact normals more uniformly, yielding slightly higher $\Zmz$; reaffirm
-that $\Zmz$ alone is insufficient to predict $N_L$ and that the directional
-fabric indicator $\alpha$ is required, as demonstrated in
-\secref{...}.]}
+We thank the reviewer for this observation; it is right to flag this
+apparent paradox. We confirm directly from the
+simulation data that
+$Z_{m0}|_{\Kzero=1.0}=4.978 > Z_{m0}|_{\Kzero=0.5}=4.894 \approx
+Z_{m0}|_{\Kzero=2.0}=4.885$ at $D_r = 90\%$ — i.e.\ the
+isotropically consolidated specimen does carry the highest initial
+coordination number — while $N_L$ in the same dataset (inset of
+Fig.~\ref{fig:zm_evolution}) decreases monotonically from
+\Kzero{} = 0.5 through 1.0 to 2.0. The two rankings are therefore genuinely
+different, not a plotting artefact, and the apparent paradox is in
+fact the central microscopic finding of the paper rather than an
+inconsistency: \Zm{} alone is not sufficient to predict liquefaction
+resistance under torsional shear.
 
-\changed{\textit{[TODO: 1--2 sentences appended to \figref{12} discussion.]}}
+The physical reason is that \Zm{} is a scalar count over all contact
+orientations, so it favours the unbiased packing produced by
+isotropic consolidation; under \Kzero{} = 1.0 there is no preferred
+direction along which contact loss is concentrated during
+consolidation, allowing slightly more contacts to be retained than
+under \Kzero{} $\neq 1$. Resistance to torsional shear $\tau_{z\theta}$,
+however, depends on which contacts carry load in the $(z,\theta)$
+plane: it is the \emph{directional partitioning} of the contact
+network that determines $N_L$. This is examined quantitatively in
+Section~\ref{subsec:micro_fabric_results}, where both the contact-
+density (count-weighted) and normal-force (force-weighted,
+Fig.~\ref{fig:contact_force_sequence}) analyses consistently identify
+the fabric anisotropy as the relevant microscopic descriptor: $\alpha_0$ correlates positively with $N_L$
+within each density group (Fig.~\ref{fig:fabric_liq_pair}b), and the
+torsion-resisting fractions $1-\Phi_{rr}$ and $1-\Phi^f_{rr}$ both
+decrease monotonically with \Kzero{}
+(Fig.~\ref{fig:fabric_mechanism}, Table~\ref{tab:fabric_diagonal}).
+
+To prevent the same confusion at first reading, we have added a brief
+forward-pointing sentence to the paragraph discussing
+Fig.~\ref{fig:zm_evolution}
+(Section~\ref{subsec:micro_fabric_results}) noting that the highest
+$Z_{m0}$ does not coincide with the highest $N_L$, with a one-clause
+hint (count vs.\ directional partitioning) and a cross-reference to
+Fig.~\ref{fig:fabric_liq_pair} and Fig.~\ref{fig:fabric_mechanism}
+where the resolution is given. The full quantitative argument is
+deliberately not duplicated at Fig.~\ref{fig:zm_evolution}, to
+preserve the build-up from \Zm{} (insufficient) $\to$ $\alpha$
+(necessary) $\to$ $\Phi^f$ (dominant) that frames the microscopic
+discussion.
+
+\changed{Forward-pointing sentence added at
+Fig.~\ref{fig:zm_evolution} discussion in
+Section~\ref{subsec:micro_fabric_results}
+\manref{p.~17, l.~462--466}; full resolution remains in the same
+section at Fig.~\ref{fig:fabric_liq_pair} \manref{p.~22} and
+Fig.~\ref{fig:fabric_mechanism} \manref{p.~23} (the latter expanded
+under R2.7).}
+
+\begin{revtext}
+[\ldots] the isotropically consolidated specimen (\Kzero{} = 1.0)
+exhibits the largest initial value ($Z_{m0} \approx 4.98$), whereas
+the anisotropically consolidated specimens (\Kzero{} = 0.5 and 2.0)
+have slightly smaller and nearly identical values
+($Z_{m0} \approx 4.89$ and $4.88$, respectively).
+\textbf{Yet \Zm{} alone cannot rank the three: the \Kzero{} = 1.0
+specimen carries the largest $Z_{m0}$ but is not the most resistant
+(Fig.~\ref{fig:liq_resistance_curves}), and the \Kzero{} = 0.5 and
+2.0 specimens share nearly identical $Z_{m0}$ yet have markedly
+different $N_L$ (inset of Fig.~\ref{fig:zm_evolution}). The reason
+is that \Zm{} counts contacts isotropically, whereas resistance to
+torsional shear depends additionally on the directional partitioning
+of contacts and forces, examined quantitatively in the paragraphs
+that follow.} [\ldots]
+\end{revtext}
 
 \clearpage
 
@@ -774,7 +887,8 @@ Table 1: Why is the friction coefficient between particles and walls zero?
 \end{rcomment}
 
 \response
-The zero particle--wall friction coefficient applies uniformly to all
+We thank the reviewer for raising this point. The zero
+particle--wall friction coefficient applies uniformly to all
 wall-type elements in the PFC model: the inner and outer
 cylinders, the top and bottom platens, and the six torsional blades
 (which are also wall elements in PFC). The physical justification
@@ -856,14 +970,35 @@ platens and cylinders, and torque is carried by normal contacts on
 the blade faces.
 \end{enumerate}
 
-\changed{Section~\ref{subsec:dem_hca}: added a short clause after the
-torsional-blade paragraph clarifying that the cylindrical walls and
-end platens are assigned $\mu_{pw}=0$ so that they act as pure
-pressure boundaries, with torque transmission provided geometrically
-by the blade faces. The full principal-plane and Coulomb-limit
-argument is kept in this letter rather than added to the manuscript,
-since it concerns a design-rationale question orthogonal to the
-paper's focus on $K_0$ effects and fabric evolution.}
+\changed{Section~\ref{subsec:dem_hca} \manref{p.~3, l.~138--142}:
+added a clause after the torsional-blade paragraph stating that the
+cylindrical walls and end platens are assigned $\mu_{pw}=0$ so that
+they act as pure pressure boundaries, with torque transmission
+provided geometrically by the blade faces, and that on the cylindrical
+walls in particular this is required by the HCA element-test reduction
+(Appendix~\ref{sec:appendix_hca}, Table~\ref{tab:hca_equations}), which
+treats the radial-normal face as a principal-stress plane. The full
+Coulomb-limit argument for the platens (Fig.~\ref{fig:rl_platen_forces})
+is kept in this letter rather than added to the manuscript, since it
+concerns a platen-design rationale orthogonal to the paper's focus on
+$K_0$ effects and fabric evolution.}
+
+\begin{revtext}
+[\ldots] these independent wall-based blades avoid interference with
+the radial expansion or contraction of the cylinders, thereby
+preserving accurate radial stress measurement. \textbf{The
+cylindrical walls and end platens are assigned zero friction
+($\mu_{pw}=0$, Table~\ref{tab:dem_parameters}) so that they act
+purely as servo-controlled pressure boundaries; torque is
+transmitted geometrically through normal contact forces on the
+blade faces and does not rely on a wall-friction coefficient. On
+the cylindrical walls in particular, $\mu_{pw}=0$ is also required
+for the HCA element-test reduction (Appendix~\ref{sec:appendix_hca}),
+which treats the radial-normal face as a principal-stress plane:
+with $\mu_{pw}>0$, torsion would generate a residual circumferential
+particle--wall traction on this face and thereby invalidate the
+principal-direction assumption.}
+\end{revtext}
 
 \FloatBarrier
 
@@ -875,7 +1010,8 @@ What is the size of torsional blades?
 \end{rcomment}
 
 \response
-The blade height is \SI{15}{mm} (Fig.~\ref{fig:rl_blade_height}), and
+We thank the reviewer for asking. The blade height is
+\SI{15}{mm} (Fig.~\ref{fig:rl_blade_height}), and
 the blades extend radially across the full annulus between the inner
 and outer cylinders. Six blades are inserted from the top and bottom
 plates (three each), uniformly spaced in the circumferential
@@ -885,9 +1021,10 @@ Fig.~\ref{fig:specimen_generation}.
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.55\linewidth]{figs/annotated/fig_r2_2.pdf}
-  \caption{Blade height $h_b=\SI{15}{mm}$ annotated on the DEM-HCA
+  \caption{Blade height $h_b$ annotated on the DEM-HCA
     specimen during air-pluviation (cf.\
-    Fig.~\ref{fig:specimen_generation}(a)).}
+    Fig.~\ref{fig:specimen_generation}(a)); $h_b=\SI{15}{mm}$ in
+    the present model.}
   \label{fig:rl_blade_height}
 \end{figure}
 
@@ -900,19 +1037,30 @@ the DEM grading ($d_{\min}=\SI{1.0}{mm}$, see the
 Section~\ref{subsec:dem_hca}), giving \SI{15}{mm}. This preserves
 the blade-to-grain scaling of the laboratory apparatus.
 
-\changed{Section~\ref{subsec:dem_hca}: the blade-insertion sentence
-now states the blade height (\SI{15}{mm}) explicitly, followed by a
-short sentence giving the blade layout (three blades at each end of
-the specimen, extending radially across the annulus and uniformly
-spaced around the specimen axis).  Figure~\ref{fig:specimen_generation}(a)
-is annotated with a dimension arrow labelling $h_b=\SI{15}{mm}$ on a
-visible top-end blade.  The blade-to-grain-size rationale
+\changed{Section~\ref{subsec:dem_hca} \manref{p.~3, l.~133--135}:
+the blade-insertion sentence now states the blade height (\SI{15}{mm})
+explicitly, followed by a short sentence giving the blade layout
+(three blades at each end of the specimen, extending radially across
+the annulus and uniformly spaced around the specimen axis).
+Figure~\ref{fig:specimen_generation}(a) \manref{p.~4} is annotated
+with a dimension arrow labelling $h_b$ on a visible
+top-end blade (the value $h_b=\SI{15}{mm}$ is stated in the main
+text).  The blade-to-grain-size rationale
 is kept in this letter rather than added to the manuscript: the
 methodology section reports the blade height as a model parameter,
 but the paper does not otherwise discuss whether the
 blade-to-$d_{\min}$ ratio is appropriate for DEM-HCA modelling,
 which is orthogonal to the paper's focus on $K_0$ effects and
 fabric evolution.}
+
+\begin{revtext}
+[\ldots] Gravity is then removed to ensure a uniform stress state,
+and \textbf{six torsional blades, each 15~mm tall, are inserted into
+the specimen} (Fig.~\ref{fig:specimen_generation}b). \textbf{Three
+blades at each end of the specimen extend radially across the
+annulus between the inner and outer cylinders, uniformly spaced
+around the specimen axis.} [\ldots]
+\end{revtext}
 
 %% ---------------- R2.3 ----------------
 \subsection*{R2.3 --- Difference vs.\ servo mechanism in Han (2024)}
@@ -923,7 +1071,9 @@ that in Han (2024)?
 \end{rcomment}
 
 \response
-\citet{Han2024jgs} held the specimen height fixed ($dH/dt=0$),
+We thank the reviewer for prompting us to make this comparison
+explicit. \citet{Han2024jgs} held the specimen height fixed
+($dH/dt=0$),
 whereas the present servo treats $dH/dt$ as an independent unknown
 solved at each timestep. Three differences follow:
 \begin{enumerate}[leftmargin=*,label=(\alph*),topsep=2pt,itemsep=3pt]
@@ -973,21 +1123,24 @@ formulation reduces exactly to \citet{Han2024jgs} in that limit
 Section~\ref{subsec:cyclic_loading}).
 
 \changed{Section~\ref{subsec:cyclic_loading}: the laboratory HCA
-paragraph (around Fig.~\ref{fig:hca_schematic}) now states
-explicitly that $p_o$, $p_i$, and $p_z$ are controlled through
+paragraph (around Fig.~\ref{fig:hca_schematic} \manref{p.~6}) now
+states explicitly that $p_o$, $p_i$, and $p_z$ are controlled through
 independent channels and can be prescribed as general functions of
-time; the contribution paragraph correspondingly describes
+time; the contribution paragraph
+\manref{p.~9, l.~259--270} correspondingly describes
 $p_{dif,r}^{tar}(t)$ and $p_{dif,z}^{tar}(t)$ as general
 time-dependent inputs, and the comparison with \citet{Han2024jgs}
 is updated to note their fixed $p_{dif,r}^{tar}=0$ (i.e.,
-$p_o=p_i$) alongside the fixed $dH/dt=0$.  Eq.~(\ref{eq:epwp_definition}) is generalized to
-$u = \sigma_r - \sigma_r^{\prime}$ (mean radial total minus mean
-radial effective stress) so that the excess pore water pressure
-definition remains valid under a time-varying $p_{dif,r}^{tar}$; it
-reduces to the previous $u=\sigma_{r0}^{\prime}-\sigma_r^{\prime}$
-for the constant-cell-pressure cases studied here. For
-transparency, the cyclic-shear program description now states
-explicitly that the cell pressures are held at $p_o=p_i=\sigma_{r0}$
+$p_o=p_i$) alongside the fixed $dH/dt=0$.
+Eq.~(\ref{eq:epwp_definition}) \manref{p.~9, l.~254--258} is
+generalized to $u = \sigma_r - \sigma_r^{\prime}$ (mean radial total
+minus mean radial effective stress) so that the excess pore water
+pressure definition remains valid under a time-varying
+$p_{dif,r}^{tar}$; it reduces to the previous
+$u=\sigma_{r0}^{\prime}-\sigma_r^{\prime}$ for the constant-cell-
+pressure cases studied here. For transparency, the cyclic-shear
+program description \manref{p.~10, l.~274--278} now states explicitly
+that the cell pressures are held at $p_o=p_i=\sigma_{r0}$
 (i.e., $p_{dif,r}^{tar}=0$) and the axial boundary is imposed in
 displacement-control mode ($dH/dt=0$) for the cyclic $K_0$ suite
 that forms the core of this paper. The monotonic validation
@@ -1001,6 +1154,36 @@ code. We thank the
 reviewer for prompting these clarifications, which make the
 generality of the boundary-condition definition explicit in the
 manuscript.}
+
+\begin{revtext}
+\textit{(Laboratory-HCA paragraph,
+Section~\ref{subsec:cyclic_loading}):} In a laboratory HCA
+[\ldots] the specimen is enclosed between an outer chamber (pressure
+$p_o$) and an inner chamber (pressure $p_i$), \textbf{which are
+controlled through independent channels and can therefore be
+prescribed as general functions of time}. An axial load is applied
+through the loading piston, producing \textbf{a vertical pressure
+$p_z$ that is likewise independently prescribed} [\ldots]
+\medskip
+
+\textit{(Generalised pore-pressure definition,
+Eq.~(\ref{eq:epwp_definition})):}
+\textbf{$u = \sigma_r - \sigma_r^{\prime}$}, where $\sigma_r$ is the
+mean radial total stress prescribed by the laboratory boundary
+conditions and $\sigma_r^{\prime}$ is the current mean radial
+effective stress evaluated from the DEM contact forces. \textbf{For
+the constant-cell-pressure cases studied here, $\sigma_r$ is
+time-invariant and equal to $\sigma_{r0}^{\prime}$, so
+\cref{eq:epwp_definition} reduces to
+$u = \sigma_{r0}^{\prime} - \sigma_r^{\prime}$.} [\ldots]
+\medskip
+
+\textit{(Comparison-with-Han2024 clause, contribution paragraph):}
+[\ldots] \textbf{\citet{Han2024jgs} solved only the radial and
+torsional conditions while keeping the specimen height fixed
+($dH/dt=0$) and the radial pressure-difference target held at
+$p_{dif,r}^{tar}=0$ (i.e., $p_o=p_i$)} [\ldots]
+\end{revtext}
 
 %% ---------------- R2.4 ----------------
 \subsection*{R2.4 --- DEM-HCA literature review and the $H=D$ height choice}
@@ -1055,7 +1238,7 @@ servo-formulation precursors \citet{Han2024jgs} and \citet{Ma2024}.
 This choice is consistent with the scope of the present analysis,
 which relies on specimen-averaged quantities (liquefaction
 resistance in Fig.~\ref{fig:liq_resistance_curves} and
-specimen-integrated fabric descriptors $Z_{m0}$, $F_c$, $\rho_c$ in
+specimen-integrated fabric descriptors $Z_{m0}$ and $\alpha_0$ in
 Section~\ref{sec:results}, all obtained by integration over the full
 specimen boundary or the full contact population) rather than on
 spatially resolved localisation features. A practical
@@ -1066,17 +1249,47 @@ and the per-case cost of high-cycle undrained simulations near
 liquefaction.
 \end{enumerate}
 
-\changed{Section~\ref{sec:introduction}, DEM paragraph: expanded to
-group the cited DEM-HCA precedents by radial boundary treatment
-(rigid cylindrical walls \citep{Shi2021,Liu2021}, stacked-wall
-approximations of membrane compliance
+\changed{Two manuscript locations updated:
+(a) Section~\ref{sec:introduction} \manref{p.~2, l.~70--75}, DEM
+paragraph: expanded to group the cited DEM-HCA precedents by radial
+boundary treatment (rigid cylindrical walls \citep{Shi2021,Liu2021},
+stacked-wall approximations of membrane compliance
 \citep{LiGuoZhang2014,LiZhangGutierrez2015,LiChenGutierrez2017}, and
 flexible bonded-sphere membranes
-\citep{Song2024,Song2024suffusion}), and to position the present
-work as an extension of the rigid-wall class to undrained cyclic
-loading. No dedicated text on the aspect-ratio choice was
-added to the manuscript; the justification above is provided in the
-reviewer's frame without expanding Section~\ref{subsec:dem_hca}.}
+\citep{Song2024,Song2024suffusion}), and to position the present work
+as an extension of the rigid-wall class to undrained cyclic loading.
+(b) Section~\ref{subsec:dem_hca} \manref{p.~3, l.~119--121},
+geometry sentence: revised to attribute the apparatus dimensions
+explicitly to \citet{Vargas2020} and to note that the
+$H = D_{\text{outer}}$ aspect ratio is also adopted by the DEM-HCA
+servo-formulation precursors \citet{Han2024jgs} and \citet{Ma2024}.
+The full $H/D_{\text{outer}}$-range survey and material-saving
+rationale above are kept in this letter, since they expand on a
+design-rationale question orthogonal to the paper's focus on $K_0$
+effects and fabric evolution.}
+
+\begin{revtext}
+\textit{(Introduction, DEM paragraph):}
+[\ldots] \textbf{DEM replication of HCA tests has been developed
+under drained and monotonic loading, addressing principal stress
+rotation, shear-band formation, and stress-path effects. Existing
+DEM-HCA models can be grouped by the radial boundary treatment:
+rigid cylindrical walls \citep{Shi2021,Liu2021}, stacked-wall
+approximations of membrane compliance
+\citep{LiGuoZhang2014,LiZhangGutierrez2015,LiChenGutierrez2017},
+and, more recently, fully flexible bonded-sphere membranes
+\citep{Song2024,Song2024suffusion}. However, extension to undrained
+cyclic loading under HCA-type boundary conditions remains limited.}
+\medskip
+
+\textit{(Section~\ref{subsec:dem_hca}, geometry sentence):}
+The specimen geometry (Fig.~\ref{fig:specimen_generation})
+\textbf{follows the laboratory-scale HCA apparatus of
+\citet{Vargas2020}, with inner diameter \SI{6}{cm}, outer diameter
+\SI{10}{cm}, and specimen height \SI{10}{cm} ($H$ equal to the
+outer diameter, also adopted by the DEM-HCA servo-formulation
+precursors \citet{Han2024jgs} and \citet{Ma2024})}.
+\end{revtext}
 
 %% ---------------- R2.5 ----------------
 \subsection*{R2.5 --- Stability of the servo near singular stiffness matrix}
@@ -1089,7 +1302,8 @@ matrix inversion?
 \end{rcomment}
 
 \response
-The reviewer raises an important point. In an undrained DEM
+We thank the reviewer for raising this important point. In an
+undrained DEM
 specimen approaching liquefaction, the contact network thins
 drastically and the aggregate wall stiffnesses collapse;
 $\hat{\mathbf{K}}$'s entries shrink accordingly,
@@ -1181,14 +1395,33 @@ through these regimes are documented in the R2.6 validation
 below.
 \end{enumerate}
 
-\changed{Section~\ref{subsec:cyclic_loading}: a short sentence
-has been added after the servo-coefficient derivation noting that
-the aggregate contact stiffness on each wall is floored at $10\%$
-of its initial (end-of-consolidation) value before
-$\hat{\mathbf{K}}$ is assembled, which keeps $\det\hat{\mathbf{K}}$
-strictly non-zero and prevents any near-singular behaviour in the
-closed-form inversion (an analogous $20\%$ floor is applied to the
-torsional moment of inertia in the independent torsional servo).}
+\changed{Section~\ref{subsec:cyclic_loading}
+\manref{p.~8--9, l.~245--252}: a short sentence has been added after
+the servo-coefficient derivation noting that the aggregate contact
+stiffness on each wall is floored at $10\%$ of its initial
+(end-of-consolidation) value before $\hat{\mathbf{K}}$ is assembled,
+which keeps $\det\hat{\mathbf{K}}$ strictly non-zero and prevents
+any near-singular behaviour in the closed-form inversion (an
+analogous $20\%$ floor is applied to the torsional moment of inertia
+in the independent torsional servo).}
+
+\begin{revtext}
+\textbf{In undrained loading, the contact network thins as the
+effective confining stress decays, and the aggregate wall
+stiffnesses $K_{r,i}$, $K_{r,o}$ and the end-platen stiffness $K_z$
+that enter $\hat{\mathbf{K}}$ can drop towards zero, driving
+$\det(\hat{\mathbf{K}})$ towards zero and the servo coefficients
+towards arbitrarily large values. To prevent near-singular behaviour
+in the closed-form inversion, each per-wall aggregate contact
+stiffness is floored at $10\%$ of its end-of-consolidation value
+before $\hat{\mathbf{K}}$ is assembled, which keeps every entry of
+$\hat{\mathbf{K}}$ bounded away from zero by construction. An
+analogous $20\%$ floor is applied to the rotational stiffness
+$I_{rot}$ in the independent torsional servo
+(\cref{eq:irot_scs}).} [\ldots] \textbf{Both floors function as
+safety margins on the closed-form inversion and are exercised
+explicitly in Section~\ref{subsec:numerical_verification}.}
+\end{revtext}
 
 %% ---------------- R2.6 ----------------
 \subsection*{R2.6 --- Evolution of $e_r$, $e_z$, or volume during validation}
@@ -1257,12 +1490,39 @@ post-liquefaction excursions.
 \end{enumerate}
 
 \changed{New Section~\ref{subsec:numerical_verification}
-(``Numerical verification of the coupled servo'') added at the end
-of the methodology, with Fig.~\ref{fig:numerical_verification}
-reporting (a)~the relative volume drift, (b)~the radial and axial
+\manref{p.~10--11, l.~282--311} (``Numerical verification of the coupled
+servo'') added at the end of the methodology, with
+Fig.~\ref{fig:numerical_verification} \manref{p.~11} reporting
+(a)~the relative volume drift, (b)~the radial and axial
 servo-error traces, and (c)~the inertial number (panel~(c)
 addressing R1.5). The verification case is listed as a footnoted
-entry in Table~\ref{tab:case_matrix}.}
+entry in Table~\ref{tab:case_matrix} \manref{p.~10}.}
+
+\begin{revtext}
+\textit{(New paragraph in
+Section~\ref{subsec:numerical_verification}, ``Volume
+conservation''):} \textbf{The constant-volume constraint is enforced
+kinematically through the analytical relation between $dr/dt$,
+$dR/dt$, and $dH/dt$ (\cref{eq:const_volume_constraint}), so the
+specimen volume is expected to remain exactly conserved up to
+floating-point round-off. Fig.~\ref{fig:numerical_verification}a
+confirms this: the relative volume drift $V(t)/V_0 - 1$ stays below
+$10^{-7}$ throughout the run, more than two orders of magnitude
+smaller than the residual compressibility of laboratory pore
+water.}
+\medskip
+
+\textit{(New paragraph, ``Boundary tracking errors''):}
+\textbf{Fig.~\ref{fig:numerical_verification}b shows the tracking
+errors for the radial and axial pressure-difference targets
+($e_r$, $e_z$): both grow modestly as the effective confining stress
+decays towards liquefaction (vertical dashed line), but remain
+bounded throughout, with peak magnitudes a few percent of the
+initial mean effective stress.} The closed-form $2 \times 2$
+inversion of $\hat{\mathbf{K}}$ therefore continues to deliver
+well-conditioned wall velocities even when the underlying contact
+network is severely depleted [\ldots]
+\end{revtext}
 
 %% ---------------- R2.7 ----------------
 \subsection*{R2.7 --- Contact-force anisotropy (3D rose diagrams)}
@@ -1275,38 +1535,124 @@ anisotropies.
 \end{rcomment}
 
 \response
-We agree. A normal-force rose has been added as a new
-\figref{15} (immediately after the contact-density rose, now
-\figref{14}). For each of the eight panels we extracted every
-ball-ball contact from the PFC snapshot, projected the contact normal
-into the local cylindrical frame ($\theta$, $r$, $z$), and binned the
-unit normals on a $36\times18$ sphere with antipodal symmetry. Two
-fabric tensors are then formed: the count-weighted
-$\bm{F}_c = (1/N_c)\sum \bm{n}\bm{n}^\top$ and the normal-force-weighted
-$\bm{F}_n = (1/\!\sum f_n)\sum f_n^c\,\bm{n}\bm{n}^\top$
-\citep{Zhou2022,Song2024}. Each panel is annotated with the deviator
-invariant $A = \sqrt{3/2}\,\lVert \bm{F} - \bm{I}/3 \rVert_F$ and the
-tilt $B$ of the largest eigenvector from $z$, so the count and force
-roses can be compared on equal footing.
+We thank the reviewer for this important suggestion. We agree, and
+have added contact-force anisotropy in two
+complementary ways.
 
-The new figure shows that even when the count fabric is nearly
-isotropic ($A_c = 0.01$ for \Kzero{} = 2.0), the force fabric carries
-a much stronger directional signature ($A_n = 0.12$, $B_n \approx
-90^\circ$) — a small set of force-bearing contacts dominates load
-transfer. Through liquefaction, the specimen-mean
-$\langle F_n\rangle$ decays from $\approx 0.57$\,N to $\approx
-0.14$\,N (a $\sim 75\%$ reduction) while $B_n$ in both specimens
-converges to $43$--$45^\circ$, aligning with the rotating principal
-stress direction. This corroborates the visual observation in
-\figref{16} (force chains) on a quantitative basis.
+\begin{enumerate}[leftmargin=*,label=(\arabic*),topsep=4pt,itemsep=6pt]
+\item \textbf{Eight-panel normal-force rose.}
+A normal-force rose has been added as a new
+Fig.~\ref{fig:contact_force_sequence} (immediately after the
+count-weighted contact-density rose, now
+Fig.~\ref{fig:contact_density_sequence}). For each of the eight
+panels we extracted every ball-ball contact from
+the PFC snapshot, projected the contact normal into the local
+cylindrical frame ($r$, $\theta$, $z$), and binned the unit normals
+on a $36\times18$ sphere with antipodal symmetry. Two fabric tensors
+are then formed: the count-weighted
+$\Phi_{ij}=(1/N_c)\sum_c n_i^c n_j^c$ and the normal-force-weighted
+$\Phi^f_{ij}=(\sum_c f_n^c\,n_i^c n_j^c)/\!\sum_c f_n^c$
+\citep{Zhou2022,Song2024}, the latter introduced as new
+Eq.~\eqref{eq:fabric_tensor_force} in
+Section~\ref{subsec:micro_fabric_results}. Each panel is annotated
+with the deviator invariant $A$ and tilt $B$
+(Eqs.~\eqref{eq:fabric_invariants} and~\eqref{eq:fabric_tilt}) and
+the specimen-mean $\langle F_n\rangle$, so the count and force roses
+can be compared on equal footing.
 
-\changed{New \figref{15} (\texttt{fig\_contact\_force\_standalone.pdf})
-plus a concise paragraph in
-Section~\ref{subsec:micro_fabric_results}; \citet{Zhou2022} added to
-the bibliography.}
+The figure shows that even when the count fabric is nearly isotropic
+($A_c\approx 0.016$ for \Kzero{} = 2.0), the force fabric carries a much
+stronger directional signature ($A_n=0.12$, $B_n\approx 90^\circ$) —
+a small set of force-bearing contacts dominates load transfer.
+Through liquefaction, $\langle F_n\rangle$ decays from
+$\approx 0.57$\,N to $\approx 0.14$\,N (a $\sim 75\%$ reduction) while
+$B_n$ in both specimens converges to $43$--$45^\circ$, aligning with
+the rotating principal-stress direction. This corroborates the visual
+observation in Fig.~\ref{fig:force_disp_sequence} (force chains) on a
+quantitative basis.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figs/fig_r2_7.pdf}
+  \caption{Reproduced from Fig.~\ref{fig:contact_force_sequence} of
+    the revised manuscript:
+    normal-force rose for \Kzero{} = 0.5 (top row) and 2.0 (bottom row)
+    at four stages of the liquefaction process ($N/N_L = 0.00$, 0.61,
+    1.05, 1.07; CSR = 0.200). Each panel is annotated with the
+    force-fabric deviator invariant $A_n$, the principal-axis tilt
+    $B_n$ from the axial direction, and the specimen-mean
+    $\langle F_n\rangle$, providing a per-panel quantitative
+    counterpart to the original visual rose.}
+  \label{fig:r2_7}
+\end{figure}
+
+\item \textbf{Mechanism plot over the full expanded dataset.}
+The same count- and force-weighted decomposition is then applied to
+the entire expanded dataset (five \Kzero{} states $\times$ two
+relative densities, CSR = 0.300) at the consolidation end-state.
+Figure~\ref{fig:fabric_mechanism}, now upgraded to a dual-axis plot,
+overlays the count torsion-resisting fraction $1-\Phi_{rr}$ (left
+axis) and the force-weighted counterpart $1-\Phi^f_{rr}$ (right
+axis), with the underlying values listed in the new
+Table~\ref{tab:fabric_diagonal} (Appendix~\ref{sec:appendix_fabric}).
+Across $\Kzero=0.5\to 2.0$ at $D_r=90\%$, $1-\Phi_{rr}$ falls from
+0.667 to 0.657 ($\sim 1.5\%$), whereas $1-\Phi^f_{rr}$ falls from
+0.733 to 0.642 ($\sim 14\%$): a $\sim 9$-fold sensitivity gap. The
+two density groups trace nearly identical curves for both
+descriptors. This identifies the load-bearing subnetwork — rather
+than the topological contact distribution alone — as the dominant
+microscopic carrier of the \Kzero{}-dependent liquefaction
+resistance, and now anchors both the mechanism discussion in
+Section~\ref{subsec:micro_fabric_results} and the implications
+paragraph in Section~\ref{subsec:limitations}.
+\end{enumerate}
+
+\changed{New Fig.~\ref{fig:contact_force_sequence} \manref{p.~20} and
+dual-axis upgrade to Fig.~\ref{fig:fabric_mechanism} \manref{p.~23};
+new Eq.~\eqref{eq:fabric_tensor_force} \manref{p.~12, l.~349--351} for
+$\Phi^f_{ij}$; Table~\ref{tab:fabric_diagonal} \manref{p.~27} added
+in Appendix~\ref{sec:appendix_fabric}; expanded paragraphs in
+Section~\ref{subsec:micro_fabric_results}
+\manref{p.~18--19, l.~494--503; p.~21, l.~548--560} and
+Section~\ref{subsec:limitations} \manref{p.~21, l.~569--573};
+\citet{Zhou2022} added to the bibliography.}
+
+\begin{revtext}
+\textit{(New equation in Section~\ref{subsec:micro_descriptors}):}
+\textbf{$\Phi^f_{ij} = \dfrac{\sum_c f_n^c\, n_i^c\, n_j^c}{\sum_c f_n^c}$
+weights each contact by its normal-force magnitude $f_n^c$ and
+therefore reflects the directional partitioning of the load-bearing
+network rather than the contact topology alone.}
+\medskip
+
+\textit{(New paragraph at
+Fig.~\ref{fig:contact_force_sequence}):}
+\textbf{Figure~\ref{fig:contact_force_sequence} weights the same
+contact set by the normal contact force \citep{Zhou2022,Song2024}.
+At the initial state, $A_c \approx 0.022$ for \Kzero{} = 0.5 and
+$A_c \approx 0.016$ for \Kzero{} = 2.0, while the force-fabric
+counterparts are several times larger ($A_n = 0.17$ and $0.12$, with
+$B_n \approx 1^\circ$ and $90^\circ$ respectively).} [\ldots]
+\textbf{Cyclic shearing reduces $\langle F_n \rangle$ from
+$\approx 0.57$\,N to $\approx 0.14$\,N (a $\sim 75\%$ decay), while
+$B_n$ converges to $43$--$45^\circ$ and $A_n$ rises to $\approx
+0.18$--$0.20$ for both specimens} [\ldots]
+\medskip
+
+\textit{(Mechanism paragraph,
+Section~\ref{subsec:micro_fabric_results}):} [\ldots]
+\textbf{as \Kzero{} increases from 0.5 to 2.0 at $D_r = 90\%$,
+$1-\Phi_{rr}$ falls from 0.667 to 0.657 (${\sim}1.5\%$), whereas
+$1-\Phi^f_{rr}$ falls from 0.733 to 0.642 (${\sim}14\%$); the two
+density groups trace nearly identical curves for both descriptors.}
+[\ldots] \textbf{The much stronger \Kzero{}-sensitivity of $\Phi^f$
+identifies the load-bearing network---rather than the contact
+topology alone---as the dominant microscopic carrier of the
+\Kzero{}-dependent liquefaction-resistance signal} [\ldots]
+\end{revtext}
 
 %% ---------------- R2.8 ----------------
-\subsection*{R2.8 --- Quantifying the differences in Fig.~15 (now \figref{16})}
+\subsection*{R2.8 --- Quantifying the differences in Fig.~15 (now Fig.~\ref{fig:force_disp_sequence})}
 
 \begin{rcomment}
 Fig.~15: It is difficult to distinguish the difference in displacement
@@ -1316,24 +1662,148 @@ $N/N_L=1.05$ and $N/N_L=1.07$. Please quantify the differences.
 \end{rcomment}
 
 \response
-The force-chain comparison at $N/N_L = 1.05$ and $1.07$ is now
-quantified directly through the new normal-force rose
-(\figref{15}; see also R2.7). At $N/N_L = 1.05$ the two specimens
-are essentially indistinguishable: $A_n = 0.18$ vs.\ $0.20$, $B_n =
-45^\circ$ vs.\ $43^\circ$, $\langle F_n\rangle = 0.16$\,N vs.\
-$0.17$\,N. At $N/N_L = 1.07$ the trend persists ($A_n = 0.20$ vs.\
-$0.18$, $B_n = 43^\circ$ vs.\ $45^\circ$, $\langle F_n\rangle =
-0.14$\,N for both). This is precisely the message of the original
-panels — once liquefaction is reached, the force chains in the
-\Kzero{} = 0.5 and 2.0 specimens have lost the imprint of their
-initial stress state — and the rose now makes that statement
-quantitative rather than visual.
+We thank the reviewer for flagging these specific instances. Both
+sub-questions are now answered quantitatively through the new
+normal-force rose (Fig.~\ref{fig:contact_force_sequence}, introduced
+in response to R2.7), each of whose eight panels is annotated with
+the force-fabric deviator
+$A_n$, principal-axis tilt $B_n$, and specimen-mean
+$\langle F_n\rangle$. The figure replaces the visual-only comparison
+of the original Fig.~15 with a per-panel tagged comparison that
+covers both reviewer-flagged regimes.
 
-\textit{[TODO: displacement-magnitude quantification at $N/N_L = 0.00$
-and $0.61$ (CDF or specimen-mean $\lVert\Delta\bm{u}\rVert$).]}
+\begin{enumerate}[leftmargin=*,label=(\arabic*),topsep=4pt,itemsep=6pt]
+\item \textbf{Force chain at $N/N_L = 1.05$ and $1.07$.}
+At $N/N_L = 1.05$ the two specimens are essentially indistinguishable:
+$A_n = 0.18$ vs.\ $0.20$, $B_n = 45^\circ$ vs.\ $43^\circ$,
+$\langle F_n\rangle = 0.16$\,N vs.\ $0.17$\,N. At $N/N_L = 1.07$ the
+convergence persists ($A_n = 0.20$ vs.\ $0.18$, $B_n = 43^\circ$ vs.\
+$45^\circ$, $\langle F_n\rangle = 0.14$\,N for both). The reverse-
+direction ordering between consecutive snapshots is the signature of
+the post-liquefaction oscillation: each loading reversal swaps the
+tilt direction of the residual force network. The visual observation
+in Fig.~\ref{fig:force_disp_sequence} — that the force chains have
+lost the imprint of the initial stress state once liquefaction is
+reached — is now backed by these numerical values.
 
-\changed{R2.7 force-rose adopted as the force-chain quantification;
-displacement quantification pending.}
+\item \textbf{Displacement at $N/N_L = 0.00$ and $0.61$.}
+At these pre-liquefaction stages, particle displacements are
+inherently small in both specimens because the contact network is
+still load-supporting; visual similarity in the displacement panels
+of Fig.~\ref{fig:force_disp_sequence} is therefore expected and is
+itself part of the finding, not a sign of missing discrimination. The quantitative
+discriminator at the same instants is not displacement but the
+force-fabric: at $N/N_L = 0.00$ the \Kzero{} = 0.5 specimen carries
+load axially ($A_n = 0.17$, $B_n \approx 1^\circ$,
+$\langle F_n\rangle = 0.57$\,N) while the \Kzero{} = 2.0 specimen
+carries load equatorially ($A_n = 0.12$, $B_n \approx 90^\circ$,
+$\langle F_n\rangle = 0.57$\,N) — the two principal directions are
+$\sim\!89^\circ$ apart even though the count-fabric and displacement
+panels look nearly identical. By $N/N_L = 0.61$ the tilt has begun to
+rotate toward the eventual $\sim\!45^\circ$ collapse direction
+($B_n = 15^\circ$ for \Kzero{} = 0.5 and $B_n = 83^\circ$ for
+\Kzero{} = 2.0), with $\langle F_n\rangle$ already reduced to
+$\sim\!0.43$--$0.45$\,N. The new rose therefore distinguishes the
+early-stage states quantitatively where the displacement field cannot,
+and the displacement panels of Fig.~\ref{fig:force_disp_sequence} are
+retained for their qualitative role of showing the kinematic
+divergence that follows from the force-fabric divergence.
+\end{enumerate}
+
+\changed{R2.7 force-rose (Fig.~\ref{fig:contact_force_sequence}
+\manref{p.~20}) cited as the quantitative discriminator at all four
+time instants; per-panel $(A_n, B_n, \langle F_n\rangle)$ annotations
+now present in the figure; displacement panels of
+Fig.~\ref{fig:force_disp_sequence} \manref{p.~21} retained for
+their kinematic-context role; explanatory paragraph extended in
+Section~\ref{subsec:micro_fabric_results}
+\manref{p.~19, l.~504--519}.}
+
+\begin{revtext}
+[\ldots] By $N/N_L = 0.61$ the displacements remain
+indistinguishable, reflecting the small accumulated strain and high
+shear stiffness at these pre-liquefaction stages; \textbf{the
+quantitative discriminator between the two states is instead the
+force-fabric tilt (Fig.~\ref{fig:contact_force_sequence}: $B_n =
+1^\circ$ vs.\ $90^\circ$ at $N/N_L = 0.00$; $15^\circ$ vs.\
+$83^\circ$ at 0.61), while the force chains thin out and darken
+(the low-force end of the colorbar) and reorient toward the
+rotating principal-stress direction.} The onset of liquefaction
+($N/N_L = 1.05$) brings an abrupt change [\ldots] \textbf{Between
+$N/N_L = 1.05$ and 1.07 the loading reverses and both visualisations
+alternate accordingly: the displacement field flips to the opposite
+direction, and the dominant force chains swing from one tilt to its
+mirror in the $z$--$\theta$ plane ($B_n$ stays between $45^\circ$
+and $43^\circ$ because, by definition, it is an unsigned tilt
+magnitude). This reversal signature is shared by both \Kzero{}
+states rather than discriminating between them.} [\ldots]
+\end{revtext}
+
+\clearpage
+
+\section*{Additional minor clarifications}
+
+The following minor edits were made proactively (not in response to a
+specific reviewer comment) to remove residual ambiguities identified
+during the revision pass. They are listed here so that the latexdiff
+reflects them as intentional improvements rather than scope creep.
+
+\begin{enumerate}[label=M\arabic*., leftmargin=*]
+\item \textbf{Servo targets in laboratory total-stress terms
+      (Section~\ref{subsec:cyclic_loading}).} The where-clauses of
+      \cref{eq:cond1_radial,eq:cond2_axial}
+      \manref{p.~6, l.~197--199; p.~6--7, l.~203--205} now state
+      explicitly $p_{dif,r}^{tar}=p_o-p_i$ and
+      $p_{dif,z}^{tar}=p_z-\sigma_r$, making the link from the formal
+      definitions to the laboratory total-stress program clearer. The
+      narrative paragraph above already established that the
+      pore-pressure $u$ drops out of these differences; the equality
+      is now reflected in the definitions themselves.
+
+\item \textbf{Explicit servo state during AC
+      (Section~\ref{subsec:preparation}).} The description of the
+      anisotropic-consolidation stress path \manref{p.~4, l.~159--160}
+      now states ``with $p_o^{\prime}=p_i^{\prime}$ held throughout
+      (so $p_{dif,r}^{tar}=0$).'' This is symmetric with the
+      cyclic-shear program opening
+      ($p_o=p_i=\sigma_{r0}$, $p_{dif,r}^{tar}=0$) and removes any
+      residual ambiguity about the radial servo state during AC.
+
+\item \textbf{Table~\ref{tab:fabric_diagonal} caption
+      (Appendix~\ref{sec:appendix_fabric}).} The earlier caption
+      label ``(CSR = 0.300)'' was misleading because the tabulated
+      values are evaluated at the consolidation end-state and are
+      shared by all CSR cases at that $(D_r,\Kzero)$. The label
+      \manref{p.~27} has been replaced with ``after anisotropic
+      consolidation.'' The figure subcaptions in
+      Section~\ref{subsec:micro_fabric_results} that legitimately
+      refer to CSR$=0.300$ results (cyclic-stage observations) are
+      unchanged.
+
+\item \textbf{Flowchart annotations
+      (Fig.~\ref{fig:servo_flowchart}).} Steps~4 and~5
+      \manref{p.~9} now carry an italic sub-line indicating the
+      constant-height reduction
+      ($S_{rr}$ alone, \cref{eq:Srr_constantH_main}; $dr/dt = S_{rr}\,
+      e_r/\Delta t$). This makes it visible from the figure alone
+      that the parametric \Kzero{} study (constant height) uses the
+      degenerate single-DOF form, while the full $2\times 2$ coupling
+      is exercised in monotonic calibration and in the
+      Section~\ref{subsec:numerical_verification} stress-control
+      verification.
+
+\item \textbf{Increment notation unified
+      (\cref{eq:coupled_stiffness} and Appendix~\ref{sec:appendix_servo}).}
+      The variational symbol $\delta p$ originally used on the LHS
+      of the coupled stiffness relation \manref{p.~8, l.~234--235} has
+      been replaced with the differential $dp$ (and likewise
+      $\delta\sigma_r^{\prime}\to d\sigma_r^{\prime}$). Both sides of
+      the tangent-stiffness relation now use the differential $d$
+      uniformly, matching the $dr$, $dH$ on the RHS; the equation
+      describes a real increment-to-increment mapping, not a
+      virtual-work form.
+
+\end{enumerate}
 
 \clearpage
 

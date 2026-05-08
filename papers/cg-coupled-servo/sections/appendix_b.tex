@@ -15,38 +15,38 @@ Let $K_{r,i}=\sum_{c\in\mathrm{inner}} k_n$ and $K_{r,o}=\sum_{c\in\mathrm{outer
 
 The sign convention adopts outward-positive for all kinematic increments: $dr>0$ and $dR>0$ denote outward (radius-increasing) wall movements, and $dH>0$ denotes an increase in specimen height. The individual pressure increments are:
 \begin{align}
-\delta p_i^{\prime} &= \frac{K_{r,i}}{A_i}\,dr,\qquad
-\delta p_o^{\prime} = -\frac{K_{r,o}}{A_o}\,dR, \label{eq:dp_individual_r}\\[4pt]
-\delta p_z^{\prime} &= -\frac{K_z}{A_z}\,dH, \label{eq:dp_individual_z}
+dp_i^{\prime} &= \frac{K_{r,i}}{A_i}\,dr,\qquad
+dp_o^{\prime} = -\frac{K_{r,o}}{A_o}\,dR, \label{eq:dp_individual_r}\\[4pt]
+dp_z^{\prime} &= -\frac{K_z}{A_z}\,dH, \label{eq:dp_individual_z}
 \end{align}
 where the signs follow from the geometry: an outward movement of the inner wall ($dr>0$) expands the inner cylinder into the specimen, compressing particles against it and increasing $p_i^{\prime}$; an outward movement of the outer wall ($dR>0$) moves it away from the specimen, unloading particles and decreasing $p_o^{\prime}$; and an increase in specimen height ($dH>0$) moves the top and bottom plates apart, unloading axial contacts and decreasing $p_z^{\prime}$.
 
 The radial pressure difference $p_{dif,r}^{\prime}=p_o^{\prime}-p_i^{\prime}$ and the average radial effective stress $\sigma_r^{\prime}=({p_o^{\prime}R+p_i^{\prime}r})/({R+r})$ (Table~\ref{tab:hca_equations}) then give:
 \begin{align}
-\delta p_{dif,r}^{\prime}
-  &= \delta p_o^{\prime}-\delta p_i^{\prime}
+dp_{dif,r}^{\prime}
+  &= dp_o^{\prime}-dp_i^{\prime}
    = -\frac{K_{r,i}}{A_i}\,dr - \frac{K_{r,o}}{A_o}\,dR, \label{eq:dp_r_three}\\[6pt]
-\delta\sigma_r^{\prime}
-  &= \frac{r}{R+r}\,\delta p_i^{\prime} + \frac{R}{R+r}\,\delta p_o^{\prime}
+d\sigma_r^{\prime}
+  &= \frac{r}{R+r}\,dp_i^{\prime} + \frac{R}{R+r}\,dp_o^{\prime}
    = \frac{K_{r,i}\,dr - K_{r,o}\,dR}{A_i+A_o}, \label{eq:dsigma_r_three}\\[6pt]
-\delta p_{dif,z}^{\prime}
-  &= \delta p_z^{\prime}-\delta\sigma_r^{\prime}
+dp_{dif,z}^{\prime}
+  &= dp_z^{\prime}-d\sigma_r^{\prime}
    = -\frac{K_z}{A_z}\,dH - \frac{K_{r,i}\,dr - K_{r,o}\,dR}{A_i+A_o}. \label{eq:dp_z_three}
 \end{align}
-Note that both terms in \cref{eq:dp_r_three} carry negative signs: any outward wall movement---whether inner or outer---reduces $p_{dif,r}^{\prime}$. By contrast, $\delta\sigma_r^{\prime}$ involves the weighted average from Table~\ref{tab:hca_equations}, in which the geometric factors $r/(R+r)$ and $R/(R+r)$ weight the inner and outer contributions differently.
+Note that both terms in \cref{eq:dp_r_three} carry negative signs: any outward wall movement---whether inner or outer---reduces $p_{dif,r}^{\prime}$. By contrast, $d\sigma_r^{\prime}$ involves the weighted average from Table~\ref{tab:hca_equations}, in which the geometric factors $r/(R+r)$ and $R/(R+r)$ weight the inner and outer contributions differently.
 
 Substituting \cref{eq:dRdt_general} into \cref{eq:dp_r_three,eq:dp_z_three} to eliminate $dR$ yields the pressure responses in terms of only $dr$ and $dH$:
 \begin{align}
-\delta p_{dif,r}^{\prime}
+dp_{dif,r}^{\prime}
   &= -\!\left(\frac{K_{r,i}}{A_i}+\frac{r}{R}\,\frac{K_{r,o}}{A_o}\right)dr
      +\frac{R^2-r^2}{2RH}\,\frac{K_{r,o}}{A_o}\,dH, \label{eq:dp_r_two}\\[6pt]
-\delta p_{dif,z}^{\prime}
+dp_{dif,z}^{\prime}
   &= -\frac{K_{r,i}-\frac{r}{R}\,K_{r,o}}{A_i+A_o}\,dr
      -\!\left(\frac{K_z}{A_z}+\frac{(R^2-r^2)\,K_{r,o}}{2RH\,(A_i+A_o)}\right)dH. \label{eq:dp_z_two}
 \end{align}
 Collecting the coefficients of $dr$ and $dH$ into a matrix:
 \begin{equation}
-\begin{pmatrix} \delta p_{dif,r}^{\prime} \\[4pt] \delta p_{dif,z}^{\prime} \end{pmatrix}
+\begin{pmatrix} dp_{dif,r}^{\prime} \\[4pt] dp_{dif,z}^{\prime} \end{pmatrix}
 =
 \underbrace{\begin{pmatrix} \hat{K}_{11} & \hat{K}_{12} \\[8pt] \hat{K}_{21} & \hat{K}_{22} \end{pmatrix}}_{\hat{\mathbf{K}}}
 \begin{pmatrix} dr \\[4pt] dH \end{pmatrix},
@@ -75,7 +75,7 @@ and the inverse is:
 \label{eq:stiffness_matrix_inv}
 \end{equation}
 
-The servo must apply wall movements that eliminate the current pressure errors $e_r$ and $e_z$, i.e., produce $\delta p_{dif,r}^{\prime}=-e_r$ and $\delta p_{dif,z}^{\prime}=-e_z$. Setting $(\delta p_{dif,r}^{\prime},\,\delta p_{dif,z}^{\prime})=(-e_r,\,-e_z)$ in \cref{eq:stiffness_matrix} and solving for the displacement rates gives:
+The servo must apply wall movements that eliminate the current pressure errors $e_r$ and $e_z$, i.e., produce $dp_{dif,r}^{\prime}=-e_r$ and $dp_{dif,z}^{\prime}=-e_z$. Setting $(dp_{dif,r}^{\prime},\,dp_{dif,z}^{\prime})=(-e_r,\,-e_z)$ in \cref{eq:stiffness_matrix} and solving for the displacement rates gives:
 \begin{align}
 \frac{dr}{dt} &= \frac{1}{\det(\hat{\mathbf{K}})}\!\left(-\hat{K}_{22}\,\frac{e_r}{\Delta t} + \hat{K}_{12}\,\frac{e_z}{\Delta t}\right), \label{eq:dr_general}\\[6pt]
 \frac{dH}{dt} &= \frac{1}{\det(\hat{\mathbf{K}})}\!\left(\hat{K}_{21}\,\frac{e_r}{\Delta t} - \hat{K}_{11}\,\frac{e_z}{\Delta t}\right), \label{eq:dH_general}

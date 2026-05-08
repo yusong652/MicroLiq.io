@@ -29,10 +29,14 @@ LEGEND_FS = 14
 PANEL_FS = 16
 GRID_KW = dict(color='grey', linestyle='--', lw=0.35, alpha=0.8)
 
-# Plateau window for the M_cs fit (deviatoric strain eps_q in %).
-# Equivalent to gamma_z_theta in [0.40, 0.80] via eps_q = gamma / sqrt(3).
-EPSQ_LO = 23.0    # %
-EPSQ_HI = 46.0    # %
+# Critical-state range for the M_cs fit (deviatoric strain eps_q in %).
+EPSQ_LO = 20.0    # %
+EPSQ_HI = 40.0    # %
+# Plot range cap: the run was carried further as a numerical-stability
+# check, but the figure is restricted to the fit window since extending
+# past 40% adds no information about M_cs and invites questions about
+# strain ranges that lie outside any laboratory envelope.
+EPSQ_PLOT_MAX = 40.0  # %
 
 
 def add_panel_label(ax, label):
@@ -69,6 +73,11 @@ def make_figure(csv_path: str, out_stem: Path):
     eps_q = df['strain_dev'].to_numpy() * 100.0   # %
     eta = q / p
 
+    # Restrict to the visible/fit range; the M_cs estimate is unchanged
+    # (the plateau is steady) but downstream plotting is bounded.
+    keep = eps_q <= EPSQ_PLOT_MAX
+    p, q, eps_q, eta = p[keep], q[keep], eps_q[keep], eta[keep]
+
     mask = (eps_q >= EPSQ_LO) & (eps_q <= EPSQ_HI)
     M_cs = float(eta[mask].mean())
     M_std = float(eta[mask].std())
@@ -83,16 +92,12 @@ def make_figure(csv_path: str, out_stem: Path):
     ax_a.plot(p, q, color='tab:blue', lw=1.6,
               label=r'$DEM\ monotonic\ undrained$')
     ax_a.plot(p[mask], q[mask], color='tab:red', lw=2.4,
-              label=fr'$Plateau:\ \epsilon_q\in[{EPSQ_LO:.0f},{EPSQ_HI:.0f}]\%$')
+              label=fr'$Critical\ state:\ \epsilon_q\in[{EPSQ_LO:.0f},{EPSQ_HI:.0f}]\%$')
 
     p_max = float(np.max(p)) * 1.05
     p_csl = np.linspace(0.0, p_max, 50)
     ax_a.plot(p_csl, M_cs * p_csl, color='black', lw=1.4, ls='--',
               label=fr'$CSL:\ q={M_cs:.3f}\,p^{{\prime}}$')
-
-    # initial state marker
-    ax_a.plot(p[0], q[0], marker='o', mfc='white', mec='tab:blue',
-              ms=7, mew=1.4, label=r'$Start\ (p_0^{\prime}=100\ kPa)$')
 
     ax_a.set_xlim(0.0, p_max)
     ax_a.set_ylim(0.0, max(q.max(), M_cs * p_max) * 1.10)
@@ -100,25 +105,26 @@ def make_figure(csv_path: str, out_stem: Path):
                     fontsize=AXLABEL_FS)
     ax_a.set_ylabel(r"$Deviatoric\ stress\ q\ (kPa)$",
                     fontsize=AXLABEL_FS)
-    ax_a.legend(fontsize=LEGEND_FS - 1, loc='upper left')
+    ax_a.legend(fontsize=LEGEND_FS - 1, loc='upper left',
+                frameon=False)
     style(ax_a)
     add_panel_label(ax_a, '(a)')
 
     # --- (b) q/p vs eps_q ---
     ax_b.plot(eps_q, eta, color='tab:blue', lw=1.4,
               label=r'$q/p^{\prime}\ (DEM)$')
+    ax_b.plot(eps_q[mask], eta[mask], color='tab:red', lw=2.4,
+              label=fr'$Critical\ state:\ \epsilon_q\in[{EPSQ_LO:.0f},{EPSQ_HI:.0f}]\%$')
     ax_b.axhline(M_cs, color='black', ls='--', lw=1.4,
                  label=fr'$M_{{cs}}={M_cs:.3f}$')
-    ax_b.axvspan(EPSQ_LO, EPSQ_HI, color='tab:red', alpha=0.12,
-                 label=fr'$Plateau\ window$')
 
-    # Annotate phi_cs
-    ax_b.text(0.97, 0.07,
+    # Annotate phi_cs (upper-right, vacated by the relocated legend)
+    ax_b.text(0.97, 0.97,
               fr'$\varphi_{{cs}}={phi_cs:.1f}^{{\circ}}$'
               '\n'
               fr'$(pure\ shear,\ b\!=\!0.5)$',
               transform=ax_b.transAxes,
-              ha='right', va='bottom', fontsize=LEGEND_FS,
+              ha='right', va='top', fontsize=LEGEND_FS,
               bbox=dict(boxstyle='round,pad=0.3', fc='white', ec='grey',
                         alpha=0.85))
 
@@ -128,7 +134,8 @@ def make_figure(csv_path: str, out_stem: Path):
                     fontsize=AXLABEL_FS)
     ax_b.set_ylabel(r"$Stress\ ratio\ q/p^{\prime}$",
                     fontsize=AXLABEL_FS)
-    ax_b.legend(fontsize=LEGEND_FS - 1, loc='upper right')
+    ax_b.legend(fontsize=LEGEND_FS - 1, loc='lower right',
+                frameon=False)
     style(ax_b)
     add_panel_label(ax_b, '(b)')
 

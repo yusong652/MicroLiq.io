@@ -1,0 +1,120 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{xcolor}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage{siunitx}
+\usepackage[authoryear,round]{natbib}
+\usepackage{xr-hyper}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  urlcolor=blue!60!black,
+  citecolor=blue!60!black,
+}
+
+% Pull labels (sections, figures, tables, equations) from the main
+% manuscript's .aux file so that \ref{...} resolves to the numbering
+% in the compiled manuscript. Requires main.tex to have been built first.
+\makeatletter
+\let\coverletter@orig@bibcite\bibcite
+\let\bibcite\@gobbletwo
+\externaldocument{../../build/main}
+\let\bibcite\coverletter@orig@bibcite
+\makeatother
+
+\newcommand{\Kzero}{\ensuremath{K_0}}
+
+\title{Cover Letter\\
+  \large Manuscript COMGE-D-26-01109 (R1)}
+\author{Yusong Han, Ryosuke Uzuoka, Kyohei Ueda}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+Dear Editor,
+
+Thank you for the opportunity to revise our manuscript
+``\emph{Influence of Initial Stress Anisotropy on Liquefaction Resistance
+in Undrained Cyclic Torsional Shear: DEM Simulation of Hollow Cylinder
+Tests}'' (COMGE-D-26-01109) submitted to
+\emph{Computers and Geotechnics}. We sincerely thank both reviewers for their
+thoughtful and constructive comments, which have helped us to substantially
+improve the manuscript.
+
+We have carefully addressed every comment. A detailed point-by-point response
+is provided in the accompanying response-to-reviewers document. In the revised
+manuscript, added or modified text is marked using \texttt{latexdiff} against
+the submitted version (also provided).
+
+\section*{Summary of major revisions}
+
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Clarified the relative-density labels}
+    ``$D_r \approx 90\%$'' and ``$D_r \approx 75\%$'' as
+    behaviour-matched references to the Toyoura density states
+    reported by \citet{Nakata1998} and \citet{Ishihara1985}, rather
+    than values computed from the DEM void ratio via the textbook
+    formula.
+  \item \textbf{Expanded the Introduction} with a review of prior
+    DEM-HCA models and the boundary-condition taxonomy (rigid wall,
+    stacked wall, flexible membrane); the rigid-wall configuration of
+    the present work is positioned as the required DEM realisation of
+    the undrained constant-volume boundary.
+  \item \textbf{Added a consolidated case table}
+    (Table~\ref{tab:case_matrix}) enumerating the CSR levels tested
+    at each $(D_r, \Kzero)$ combination across the primary, expanded,
+    and verification sets.
+  \item \textbf{Added a new ``Numerical verification'' subsection}
+    (Section~\ref{subsec:numerical_verification},
+    Fig.~\ref{fig:numerical_verification}) reporting the volume
+    drift, the radial and axial servo-tracking errors, and the
+    inertial number for a representative post-liquefaction run,
+    documenting both exact volume conservation and the quasi-static
+    character of the loading.
+  \item \textbf{Identified the source of the CSL in
+    Fig.~\ref{fig:macro_response_c}} as the steady-state friction
+    angle $\varphi_{cs}\approx 31^{\circ}$ reported by
+    \citet{VerdugoIshihara1996} for Toyoura sand, converted to the
+    HCA pure-shear loading ($b=0.5$) via the Mohr--Coulomb relation
+    $M_{cs}=\sqrt{3}\sin\varphi_{cs}\approx 0.892$; the citation and
+    conversion are now stated in the figure caption.
+  \item \textbf{Added contact-force anisotropy analysis} to complement
+    the existing contact-density analysis: a new normal-force rose
+    (Fig.~\ref{fig:contact_force_sequence}) and a dual-axis upgrade
+    to Fig.~\ref{fig:fabric_mechanism} that overlays the count- and
+    force-weighted torsion-resisting fractions across the full
+    expanded dataset (10 cases), supported by a new appendix table
+    (Table~\ref{tab:fabric_diagonal}).
+  \item \textbf{Quantified the differences} between specimens in
+    Fig.~\ref{fig:force_disp_sequence} via the new normal-force rose
+    (Fig.~\ref{fig:contact_force_sequence}), which reports the
+    force-fabric deviator $A_n$, principal-direction tilt $B_n$, and
+    specimen-mean $\langle F_n\rangle$ for each panel.
+  \item Minor clarifications and additional references throughout.
+\end{itemize}
+
+We hope the revised manuscript now meets the journal's standards and the
+reviewers' expectations. We remain grateful for the reviewers' careful
+reading and valuable suggestions.
+
+\vspace{1em}
+
+\noindent Sincerely,
+
+\vspace{0.5em}
+
+\noindent Yusong Han, Ryosuke Uzuoka, Kyohei Ueda \\
+on behalf of all authors
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}

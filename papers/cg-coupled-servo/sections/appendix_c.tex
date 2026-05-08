@@ -1,11 +1,11 @@
 \section{Initial fabric tensor diagonal components}
 \label{sec:appendix_fabric}
 
-Table~\ref{tab:fabric_diagonal} lists the initial diagonal components of the count- and force-weighted fabric tensors in the local cylindrical frame $(\hat{\theta},\hat{r},\hat{z})$ for the expanded dataset (five \Kzero{} states at two relative densities, CSR = 0.300). The count tensor is $\Phi_{ij} = (1/N_c)\sum_c n_i^c n_j^c$; the force-weighted tensor is $\Phi^f_{ij} = (\sum_c f_n^c n_i^c n_j^c) / \sum_c f_n^c$. Both are evaluated on ball--ball contacts only at the consolidation end-state. The torsion-resisting fractions $1 - \Phi_{rr}$ and $1 - \Phi^f_{rr}$ are included in the last columns of each block.
+Table~\ref{tab:fabric_diagonal} lists the initial diagonal components of the count- and force-weighted fabric tensors in the local cylindrical frame $(\hat{r},\hat{\theta},\hat{z})$ for the expanded dataset (five \Kzero{} states at two relative densities). The count tensor is $\Phi_{ij} = (1/N_c)\sum_c n_i^c n_j^c$; the force-weighted tensor is $\Phi^f_{ij} = (\sum_c f_n^c n_i^c n_j^c) / \sum_c f_n^c$. Both are evaluated on ball--ball contacts only at the consolidation end-state. The torsion-resisting fractions $1 - \Phi_{rr}$ and $1 - \Phi^f_{rr}$ are included in the last columns of each block.
 
 \begin{table}[h]
 \centering
-\caption{Initial fabric tensor diagonal components and torsion-resisting fractions for the expanded dataset (CSR = 0.300). The count fabric varies by ${\sim}1.5\%$ across \Kzero{}, while the force-weighted fabric varies by ${\sim}14\%$, demonstrating the much greater sensitivity of the load-bearing fabric to consolidation anisotropy.}
+\caption{Initial fabric tensor diagonal components and torsion-resisting fractions for the expanded dataset, after anisotropic consolidation. The count fabric varies by ${\sim}1.5\%$ across \Kzero{}, while the force-weighted fabric varies by ${\sim}14\%$, demonstrating the much greater sensitivity of the load-bearing fabric to consolidation anisotropy.}
 \label{tab:fabric_diagonal}
 \small
 \setlength{\tabcolsep}{4pt}
@@ -13,21 +13,21 @@ Table~\ref{tab:fabric_diagonal} lists the initial diagonal components of the cou
 \toprule
 & & \multicolumn{4}{c}{Count fabric $\Phi_{ij}$} & & \multicolumn{4}{c}{Force fabric $\Phi^f_{ij}$} \\
 \cmidrule{3-6} \cmidrule{8-11}
-$D_r$ & \Kzero{} & $\Phi_{\theta\theta}$ & $\Phi_{rr}$ & $\Phi_{zz}$ & $1{-}\Phi_{rr}$ & & $\Phi^f_{\theta\theta}$ & $\Phi^f_{rr}$ & $\Phi^f_{zz}$ & $1{-}\Phi^f_{rr}$ \\
+$D_r$ & \Kzero{} & $\Phi_{rr}$ & $\Phi_{\theta\theta}$ & $\Phi_{zz}$ & $1{-}\Phi_{rr}$ & & $\Phi^f_{rr}$ & $\Phi^f_{\theta\theta}$ & $\Phi^f_{zz}$ & $1{-}\Phi^f_{rr}$ \\
 \midrule
 \multirow{5}{*}{90\%}
-& 0.5  & 0.330 & 0.317 & 0.354 & 0.683 & & 0.285 & 0.267 & 0.449 & 0.733 \\
-& 0.67 & 0.332 & 0.321 & 0.347 & 0.679 & & 0.309 & 0.291 & 0.400 & 0.709 \\
-& 1.0  & 0.334 & 0.322 & 0.344 & 0.678 & & 0.339 & 0.317 & 0.344 & 0.683 \\
-& 1.5  & 0.335 & 0.323 & 0.342 & 0.677 & & 0.366 & 0.341 & 0.293 & 0.659 \\
-& 2.0  & 0.341 & 0.327 & 0.332 & 0.673 & & 0.386 & 0.358 & 0.255 & 0.642 \\
+& 0.5  & 0.333 & 0.321 & 0.346 & 0.667 & & 0.267 & 0.285 & 0.449 & 0.733 \\
+& 0.67 & 0.337 & 0.323 & 0.340 & 0.664 & & 0.291 & 0.309 & 0.400 & 0.709 \\
+& 1.0  & 0.338 & 0.325 & 0.338 & 0.662 & & 0.317 & 0.339 & 0.344 & 0.683 \\
+& 1.5  & 0.339 & 0.326 & 0.335 & 0.661 & & 0.341 & 0.366 & 0.293 & 0.659 \\
+& 2.0  & 0.343 & 0.331 & 0.325 & 0.657 & & 0.358 & 0.386 & 0.255 & 0.642 \\
 \midrule
 \multirow{5}{*}{75\%}
-& 0.5  & 0.328 & 0.316 & 0.355 & 0.684 & & 0.284 & 0.266 & 0.450 & 0.734 \\
-& 0.67 & 0.331 & 0.322 & 0.347 & 0.678 & & 0.309 & 0.291 & 0.400 & 0.709 \\
-& 1.0  & 0.333 & 0.323 & 0.344 & 0.677 & & 0.339 & 0.318 & 0.343 & 0.682 \\
-& 1.5  & 0.335 & 0.325 & 0.341 & 0.675 & & 0.366 & 0.342 & 0.292 & 0.658 \\
-& 2.0  & 0.342 & 0.330 & 0.329 & 0.670 & & 0.387 & 0.360 & 0.253 & 0.640 \\
+& 0.5  & 0.333 & 0.319 & 0.348 & 0.667 & & 0.266 & 0.284 & 0.450 & 0.734 \\
+& 0.67 & 0.338 & 0.322 & 0.340 & 0.662 & & 0.291 & 0.309 & 0.400 & 0.709 \\
+& 1.0  & 0.339 & 0.323 & 0.337 & 0.661 & & 0.318 & 0.339 & 0.343 & 0.682 \\
+& 1.5  & 0.341 & 0.325 & 0.334 & 0.659 & & 0.342 & 0.366 & 0.292 & 0.658 \\
+& 2.0  & 0.346 & 0.332 & 0.322 & 0.654 & & 0.360 & 0.387 & 0.253 & 0.640 \\
 \bottomrule
 \end{tabular}
 \end{table}

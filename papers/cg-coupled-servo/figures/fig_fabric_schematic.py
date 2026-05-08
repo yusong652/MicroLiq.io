@@ -246,7 +246,7 @@ ax2.plot(x, series(75, 'one_minus_Phi_r'), color=C_COUNT, marker='o',
 ax2.set_ylabel(r'Count $1 - \Phi_{rr}$', fontsize=8, color=C_COUNT)
 ax2.tick_params(axis='y', labelsize=7, colors=C_COUNT)
 ax2.spines['left'].set_color(C_COUNT)
-ax2.set_ylim(0.660, 0.690)
+ax2.set_ylim(0.645, 0.675)
 
 # Right axis: force-weighted 1 - \Phi_{rr}^{f}
 ax2b = ax2.twinx()
