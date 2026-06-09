@@ -74,7 +74,7 @@ papers/*/diff/cas-*.cls
 papers/*/diff/cas-*.sty
 papers/*/diff/cas-*.bst
 papers/*/diff/refs.bib
-papers/*/diff/figures/
+papers/*/diff/figures
 papers/*/diff/*.bak
 
 # Data files
