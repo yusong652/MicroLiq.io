@@ -507,6 +507,13 @@ a:hover {
     font-style: italic;
 }
 
+/* Stack multiple citations, one per line */
+.card-citation-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
 /* ═══════════════════════════════════════════
    TECHNICAL STACK
    ═══════════════════════════════════════════ */
