@@ -62,25 +62,36 @@
 			<p class="section-label">Research</p>
 			<h2 class="section-title">From particle contacts to earthquake response</h2>
 			<p style="color:var(--text-secondary);font-size:1.05rem;line-height:1.8;max-width:680px;margin-bottom:3rem;">
-				My research traces a single thread: understanding why soil loses strength during earthquakes, at the scale of individual particle contacts. Along the way, I developed new simulation methods, validated them experimentally, and built AI tools to accelerate the entire workflow.
+				I build simulation tools, run discrete element models, and study how soils liquefy during earthquakes.
 			</p>
 
 			<!-- Card 1: AI tools ecosystem -->
 			<div class="research-card">
 				<div class="research-card-media dual">
-					<img src="https://raw.githubusercontent.com/yusong652/pfc-mcp/assets/pfc-mcp.gif" alt="pfc-mcp demo" loading="eager">
+					<img src="https://raw.githubusercontent.com/yusong652/itasca-mcp/assets/pfc-mcp.gif" alt="itasca-mcp demo" loading="eager">
 					<img src="https://raw.githubusercontent.com/yusong652/yade-mcp/assets/assets/demo.gif" alt="yade-mcp demo" loading="eager">
 				</div>
 				<div class="research-card-body">
-					<span class="research-card-label">pfc-mcp · yade-mcp · toyoura-nagisa</span>
+					<span class="research-card-label">itasca-mcp · yade-mcp · toyoura-nagisa</span>
 					<span class="research-card-number">01</span>
 					<h3 class="research-card-title">AI agents for DEM simulation</h3>
-					<p class="research-card-text">
-						An ecosystem of open-source tools that bring AI into discrete element simulation. Two MCP servers connect any LLM agent directly to ITASCA PFC and open-source YADE — with BM25-powered doc search, interactive code execution, and live bridges to running simulation instances. Toyoura-nagisa goes further: a full-stack agent platform with multi-agent architecture, multi-provider LLM support, and git-versioned execution for full reproducibility.
-					</p>
+					<div class="tool-list">
+						<div class="tool-item">
+							<code class="tool-slogan">itasca&gt;model new ;now, with LLM.</code>
+							<p class="research-card-text">itasca-mcp connects AI agents to ITASCA's numerical modeling software — PFC, FLAC, 3DEC, MPoint, and MassFlow — through the Model Context Protocol.</p>
+						</div>
+						<div class="tool-item">
+							<code class="tool-slogan">O.engines += [LLM()]  # yet another engine.</code>
+							<p class="research-card-text">yade-mcp connects AI agents to YADE, the open-source discrete element method engine.</p>
+						</div>
+						<div class="tool-item">
+							<code class="tool-slogan">Script is context.</code>
+							<p class="research-card-text">Nagisa is an AI agent for geotech.</p>
+						</div>
+					</div>
 					<div class="research-card-meta">
-						<a href="https://github.com/yusong652/pfc-mcp" target="_blank" rel="noopener" class="card-link">
-							<i class="fab fa-github"></i> pfc-mcp <i class="fas fa-arrow-right"></i>
+						<a href="https://github.com/yusong652/itasca-mcp" target="_blank" rel="noopener" class="card-link">
+							<i class="fab fa-github"></i> itasca-mcp <i class="fas fa-arrow-right"></i>
 						</a>
 						<a href="https://github.com/yusong652/yade-mcp" target="_blank" rel="noopener" class="card-link">
 							<i class="fab fa-github"></i> yade-mcp <i class="fas fa-arrow-right"></i>
@@ -94,7 +105,7 @@
 
 			<!-- Card 2: Fabric -->
 			<div class="research-card">
-				<a href="triaxial/triaxial.html" class="research-card-media compact">
+				<a href="https://doi.org/10.1007/s12205-023-0336-1" target="_blank" rel="noopener" class="research-card-media compact">
 					<img src="triaxial/demo/trueTriaxial.png" alt="True triaxial DEM apparatus" loading="lazy">
 				</a>
 				<div class="research-card-body">
@@ -105,37 +116,35 @@
 						Investigated fabric evolution in granular soils through true triaxial DEM simulations under general stress conditions, including various stress paths and Lode angles.
 					</p>
 					<div class="research-card-meta">
-						<a href="triaxial/triaxial.html" class="card-link">
-							Details <i class="fas fa-arrow-right"></i>
-						</a>
-						<span class="card-citation">Han et al. (2023) KSCE J Civ Eng</span>
+						<a href="https://doi.org/10.1007/s12205-023-0336-1" target="_blank" rel="noopener" class="card-citation">Han, Y., Kato, S., &amp; Kim, B. S. (2023). DEM analysis of fabric evolution and behavior of granular geomaterials in true triaxial test with flexible boundary. KSCE Journal of Civil Engineering, 27(8), 3341&ndash;3354.</a>
 					</div>
 				</div>
 			</div>
 
 			<!-- Card 3: HCA -->
 			<div class="research-card">
-				<a href="torsionSim/torsionSim.html" class="research-card-media duo">
-					<img src="torsionSim/demo/hca_schematic.jpg" alt="Cutaway render of the DEM hollow cylinder specimen" loading="lazy">
-					<img src="torsionSim/demo/contact_force_polar.jpg" alt="Polar distribution of contact forces" loading="lazy">
+				<a href="https://doi.org/10.1016/j.compgeo.2026.108356" target="_blank" rel="noopener" class="research-card-media duo">
+					<img src="torsionSim/demo/hca_standalone.jpg" alt="Hollow cylinder apparatus: laboratory boundary pressures and their DEM counterparts" class="wide" loading="lazy">
+					<span class="media-panel">
+						<img src="torsionSim/demo/contact_force_k0_05_t0.jpg" alt="Initial normal contact force distribution, K0 = 0.5" loading="lazy">
+						<span class="media-tag">K<sub>0</sub> = 0.5</span>
+					</span>
+					<span class="media-panel">
+						<img src="torsionSim/demo/contact_force_k0_20_t0.jpg" alt="Initial normal contact force distribution, K0 = 2.0" loading="lazy">
+						<span class="media-tag">K<sub>0</sub> = 2.0</span>
+					</span>
 				</a>
 				<div class="research-card-body">
 					<span class="research-card-label">hca-dem</span>
 					<span class="research-card-number">03</span>
 					<h3 class="research-card-title">DEM-Based HCA Simulation</h3>
 					<p class="research-card-text">
-						Developed a coupled analytical servo mechanism that simultaneously satisfies undrained conditions and complex stress states in hollow cylinder apparatus simulations, enabling DEM-based cyclic torsional shear under arbitrary stress conditions. Applied to reveal how initial stress anisotropy governs liquefaction resistance — published in Computers and Geotechnics.
+						Developed a coupled analytical servo mechanism that simultaneously satisfies undrained conditions and complex stress states in hollow cylinder apparatus simulations, enabling DEM-based cyclic torsional shear under arbitrary stress conditions. Applied to reveal how initial stress anisotropy governs liquefaction resistance.
 					</p>
 					<div class="research-card-meta">
-						<a href="torsionSim/torsionSim.html" class="card-link">
-							Details <i class="fas fa-arrow-right"></i>
-						</a>
-						<a href="https://doi.org/10.1016/j.compgeo.2026.108356" target="_blank" rel="noopener" class="card-link">
-							Paper <i class="fas fa-arrow-right"></i>
-						</a>
 						<div class="card-citation-stack">
-							<span class="card-citation">Han, Uzuoka &amp; Ueda (2026) Comput Geotech</span>
-							<span class="card-citation">Ma, Han et al. (2024) Comput Geotech</span>
+							<a href="https://doi.org/10.1016/j.compgeo.2026.108356" target="_blank" rel="noopener" class="card-citation">Han, Y., Uzuoka, R., &amp; Ueda, K. (2026). Influence of initial stress anisotropy on liquefaction resistance in undrained cyclic torsional shear: DEM simulation of hollow cylinder tests. Computers and Geotechnics, 199, 108356.</a>
+							<a href="https://doi.org/10.1016/j.compgeo.2024.106402" target="_blank" rel="noopener" class="card-citation">Ma, Q., He, X., Zhou, Y. G., Chen, Y. M., &amp; Han, Y. S. (2024). An approach to DEM simulation of hollow torsional shear tests for achieving general loading paths. Computers and Geotechnics, 172, 106402.</a>
 						</div>
 					</div>
 				</div>
@@ -143,11 +152,11 @@
 
 			<!-- Card 4: Multi-directional -->
 			<div class="research-card">
-				<a href="multidirection/multidirection.html" class="research-card-media compact triple">
+				<div class="research-card-media compact triple">
 					<img src="multidirection/demo/stress_unidirectional.jpg" alt="Unidirectional loading" loading="lazy">
 					<img src="multidirection/demo/stress_single8.jpg" alt="Single-8 loading" loading="lazy">
 					<img src="multidirection/demo/stress_double8.jpg" alt="Double-8 loading" loading="lazy">
-				</a>
+				</div>
 				<div class="research-card-body">
 					<span class="research-card-label">multi-directional</span>
 					<span class="research-card-number">04</span>
@@ -155,11 +164,6 @@
 					<p class="research-card-text">
 						Proposed the double-8 loading path to quantitatively isolate multi-directional shear effects on liquefaction, maintaining equal shear stress magnitudes across different loading patterns.
 					</p>
-					<div class="research-card-meta">
-						<a href="multidirection/multidirection.html" class="card-link">
-							Animations <i class="fas fa-arrow-right"></i>
-						</a>
-					</div>
 				</div>
 			</div>
 
@@ -226,18 +230,18 @@
 					</div>
 					<p class="project-card-desc">AI agent platform for PFC simulations. Multi-provider LLM, real-time WebSocket bridge to ITASCA PFC, React frontend.</p>
 					<div class="project-card-tags">
-						<span>FastAPI</span><span>React</span><span>LLM</span><span>WebSocket</span>
+						<span>FastAPI</span><span>React</span><span>LLM</span>
 					</div>
 				</a>
-				<a href="https://github.com/yusong652/pfc-mcp" target="_blank" rel="noopener" class="project-card">
-					<img src="https://raw.githubusercontent.com/yusong652/pfc-mcp/assets/header.gif" alt="pfc-mcp header" class="project-card-img" loading="lazy">
+				<a href="https://github.com/yusong652/itasca-mcp" target="_blank" rel="noopener" class="project-card">
+					<img src="https://raw.githubusercontent.com/yusong652/itasca-mcp/assets/header.webp" alt="itasca-mcp header" class="project-card-img" loading="lazy">
 					<div class="project-card-header">
 						<i class="fab fa-github"></i>
-						<span class="project-card-name">pfc-mcp</span>
+						<span class="project-card-name">itasca-mcp</span>
 					</div>
-					<p class="project-card-desc">MCP server for PFC workflows. Versioned docs (PFC 6/7/9), interactive code execution, and simulation management via any MCP-compatible client.</p>
+					<p class="project-card-desc">MCP server for ITASCA's numerical modeling software — PFC, FLAC, 3DEC, MPoint, and MassFlow. Versioned docs, interactive code execution, and simulation management via any MCP-compatible client.</p>
 					<div class="project-card-tags">
-						<span>MCP</span><span>Python</span><span>PFC</span>
+						<span>MCP</span><span>Python</span><span>ITASCA</span>
 					</div>
 				</a>
 				<a href="https://github.com/yusong652/yade-mcp" target="_blank" rel="noopener" class="project-card">
