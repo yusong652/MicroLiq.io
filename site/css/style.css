@@ -394,6 +394,20 @@ a:hover {
     transform: scale(1.03);
 }
 
+/* Duo image layout — two square panels side by side */
+.research-card-media.duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    padding: 0;
+}
+
+.research-card-media.duo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
 /* Triple image layout for multi-directional card */
 .research-card-media.triple {
     display: grid;
