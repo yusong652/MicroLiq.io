@@ -1,181 +1,132 @@
+# Author: https://github.com/yusong652
 import numpy as np
 import pandas as pd
-from mpl_toolkits.mplot3d import Axes3D
 import matplotlib
-import matplotlib.colors
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import csv
 
-class PolarDist():
 
-	def __init__(self):
-		self.finesse = 8
-		self.read_file(36,18,file_name='distContacts.csv')
-		# self.density_max = self.df[:,:self.number_u*self.number_v].max()/53764
-		# self.density_min = self.df[:,:self.number_u*self.number_v].min()/53764
-		self.density_max = 0.5
-		self.density_min = 0.0
+class PolarDist:
 
-	def read_file(self, number_u, number_v, file_name):
-		self.df = pd.read_csv(file_name,header=0).to_numpy()
-		self.file_n = file_name
-		self.number_u = number_u
-		self.number_v = number_v
+    def __init__(self, file_name='distContacts.csv',
+                 number_u=36, number_v=18, n_particles=53764,
+                 density_max=0.5, density_min=0.0, resolution=8):
+        self.number_u = number_u
+        self.number_v = number_v
+        self.n_particles = n_particles
+        self.density_max = density_max
+        self.density_min = density_min
+        self.resolution = resolution
 
-	def get_density_color(self, row_index):
-		self.density = \
-		self.df[row_index][:self.number_u*self.number_v]/53764
-		self.density = \
-		self.density.reshape(self.number_u,self.number_v)
-		self.color_map = self.density / (self.density_max - self.density_min)
+        self.df = pd.read_csv(file_name, header=0).to_numpy()
+        self._precompute_mesh()
 
-	def get_fig_ax(self):
-		self.fig = plt.figure(figsize=(6., 6.))
-		self.ax = self.fig.add_subplot(111, projection='3d')
-		self.ax.set_box_aspect((1, 1, 1))
+    def _precompute_mesh(self):
+        """Pre-compute angular mesh and trig values (constant across frames)."""
+        nu, nv, f = self.number_u, self.number_v, self.resolution
 
-	def get_sphere_surface(self, transp=0.5):
-		"plotting the surface"
-		for m in np.arange(self.number_u):
-		    for n in np.arange(self.number_v):
-		        start1 = m * 2 * np.pi / self.number_u
-		        start2 = n * np.pi / self.number_v
-		        u = np.linspace(start1, start1 + 2 * \
-		            np.pi / self.number_u, self.finesse,
-		            endpoint=True)
-		        v = np.linspace(start2, start2 + np.pi / \
-		            self.number_v, self.finesse,
-		            endpoint=True)
-		        r = self.density[m,n]
-		        x = r * np.outer(np.cos(u), np.sin(v))
-		        y = r * np.outer(np.sin(u), np.sin(v))
-		        z = r * np.outer(np.ones(np.size(u)), np.cos(v))
-		        color_scalar = self.color_map[m,n]
-		        if color_scalar > 1:
-		        	color_scalar = 1
-		        elif color_scalar < 0:
-		        	color_scalar = 0
-		        pot = np.outer(np.ones(np.size(u)), \
-		            np.ones(np.size(v))) * color_scalar
-		        colors = plt.cm.rainbow(pot) 
-		        surf = self.ax.plot_surface(x,y,z, facecolors=colors,
-		            linewidth=0.2, antialiased=True, alpha=transp)
+        # Build 1D angle arrays: each bin gets `f` points
+        u_1d = np.concatenate([
+            np.linspace(2 * np.pi * m / nu, 2 * np.pi * (m + 1) / nu, f)
+            for m in range(nu)
+        ])
+        v_1d = np.concatenate([
+            np.linspace(np.pi * n / nv, np.pi * (n + 1) / nv, f)
+            for n in range(nv)
+        ])
 
-	def get_plane_lr(self, transp=0.5):
-		"plotting the plane on the left and right"
-		for m in np.arange(self.number_u):
-		    for n in np.arange(self.number_v):
-		        start1 = n * np.pi / self.number_v
-		        u = m * 2 * np.pi / self.number_u
-		        r0 = self.density[m,n]
-		        r = np.linspace(0, r0, self.finesse)
-		        v = np.linspace(start1, start1 + np.pi/self.number_v,\
-		         self.number_v)
-		        x = np.cos(u) * np.outer(np.sin(v), r)
-		        y = np.sin(u) * np.outer(np.sin(v), r)
-		        z = np.outer(np.cos(v), r)
-		        color_scalar = self.color_map[m,n]
-		        pot = np.outer(np.ones(np.size(v)), \
-		        np.ones(np.size(r))) * color_scalar
-		        colors = plt.cm.rainbow(pot) 
-		        plane_lr1 = self.ax.plot_surface(x,y,z,facecolors=colors,
-		            linewidth=0.2, alpha=transp, antialiased=True)
+        # 2D mesh via broadcasting
+        U = u_1d[:, None]  # (nu*f, 1)
+        V = v_1d[None, :]  # (1, nv*f)
 
-		        x = np.cos(u + 2 * np.pi / self.number_u) *\
-		         np.outer(np.sin(v), r)
-		        y = np.sin(u + 2 * np.pi / self.number_u) *\
-		         np.outer(np.sin(v), r)
-		        z = np.outer(np.cos(v), r)
-		        pot = np.outer(np.ones(np.size(v)), \
-		        np.ones(np.size(r))) * color_scalar
-		        colors = plt.cm.rainbow(pot) 
-		        plane_lr2 = self.ax.plot_surface(x,y,z,facecolors=colors,
-		            linewidth=0.2, alpha=transp, antialiased=True)
+        # Cache trig (reused every frame)
+        self._cos_U = np.cos(U)
+        self._sin_U = np.sin(U)
+        self._sin_V = np.sin(V)
+        self._cos_V = np.cos(V)
 
-	def get_plane_tb(self, transp=0.5):
-		"plotting the plane on the top and bottom"
-		for m in np.arange(self.number_u):
-		    for n in np.arange(self.number_v):
-		        start1 = m * 2 * np.pi / self.number_u
-		        v = n * np.pi / self.number_v
-		        r0 = self.density[m,n]
-		        r = np.linspace(0, r0, self.finesse)
-		        u = np.linspace(start1, start1 + 2 * np.pi / \
-		            self.number_u)
-		        x = np.sin(v) * np.outer(np.cos(u), r)
-		        y = np.sin(v) * np.outer(np.sin(u), r)
-		        z = np.cos(v) * np.outer(np.ones(np.size(u)), r)
-		        color_scalar = self.color_map[m,n]
-		        pot = np.outer(np.ones(np.size(u)), \
-		        np.ones(np.size(r))) * color_scalar
-		        colors = plt.cm.rainbow(pot) 
-		        plane_tb1 = self.ax.plot_surface(x,y,z,facecolors=colors,
-		            linewidth=2, alpha=transp)
+        # Bin index lookup: mesh point i -> bin index m (or n)
+        self._bin_m = np.repeat(np.arange(nu), f)  # (nu*f,)
+        self._bin_n = np.repeat(np.arange(nv), f)  # (nv*f,)
 
-		        x = np.sin(v + np.pi / self.number_v) *\
-		         np.outer(np.cos(u), r)
-		        y = np.sin(v + np.pi / self.number_v) *\
-		         np.outer(np.sin(u), r)
-		        z = np.cos(v + np.pi / self.number_v) *\
-		         np.outer(np.ones(np.size(u)), r)
-		        pot = np.outer(np.ones(np.size(u)), \
-		        np.ones(np.size(r))) * color_scalar
-		        colors = plt.cm.rainbow(pot) 
-		        plane_tb2 = self.ax.plot_surface(x,y,z,facecolors=colors,
-		            linewidth=2, alpha=transp)
+    def _get_density(self, row_index):
+        """Extract and reshape density for one timestep."""
+        n = self.number_u * self.number_v
+        raw = self.df[row_index][:n]
+        return (raw / self.n_particles).reshape(self.number_u, self.number_v)
 
-	def get_cb(self):
-		"getting the colorbar"
-		# norm = matplotlib.colors.SymLogNorm(1,
-		#     vmin=self.density_min,vmax=self.density_max)
+    def _render_frame(self, density, filename):
+        """Render one frame with a single plot_surface call."""
+        color_scalar = np.clip(
+            density / (self.density_max - self.density_min), 0, 1
+        )
 
-		sm = plt.cm.ScalarMappable(cmap=plt.cm.rainbow)
-		sm.set_array(np.array([self.density_min, self.density_max]))
-		#modify the position of colorbar
-		cbaxes = self.fig.add_axes([0.85, 0.35, 0.02, 0.3]) 
-		self.cb = self.fig.colorbar(sm,cax=cbaxes,)
-		self.cb.set_label(r"$Contact\ Density$", fontsize=15)
+        # Map bin-level values to full mesh via index broadcasting
+        R = density[self._bin_m[:, None], self._bin_n[None, :]]
+        C = color_scalar[self._bin_m[:, None], self._bin_n[None, :]]
 
-	def get_dist_fig(self):
-		for row in np.arange(0, 421):
-			self.get_fig_ax()
-			self.get_density_color(row*1)
-			self.get_sphere_surface()
-			self.get_plane_lr()
-			self.get_plane_tb()
-			self.get_cb()
-			self.ax.zaxis.set_rotate_label(False)
-			self.ax.set_xlabel(r"$Circumferential$", fontsize=16,
-				labelpad=1)
-			self.ax.set_ylabel(r"$Radial$", fontsize=16,
-				labelpad=1)
-			self.ax.set_zlabel(r"$Axial$", fontsize=16, rotation=90,
-				labelpad=1)
-			self.ax.set_xlim(-self.density_max,self.density_max)
-			self.ax.set_ylim(-self.density_max,self.density_max)
-			self.ax.set_zlim(-self.density_max,self.density_max)
-			timeIncrement = 0.01
-			time = row * timeIncrement
-			# self.ax.set_title(r'$Contact\ Distribution\ (Deviatoric=)$',
-			# 	fontsize=10)
-			# remove formatter from the axes
-			self.ax.xaxis.set_major_formatter(plt.NullFormatter())
-			self.ax.yaxis.set_major_formatter(plt.NullFormatter())
-			self.ax.zaxis.set_major_formatter(plt.NullFormatter())
-			# Hide grid lines
-			self.ax.grid(False)
+        # Cartesian coordinates (vectorized)
+        X = R * self._cos_U * self._sin_V
+        Y = R * self._sin_U * self._sin_V
+        Z = R * self._cos_V
 
-			# Hide axes ticks
-			self.ax.set_xticks([])
-			self.ax.set_yticks([])
-			self.ax.set_zticks([])
-			# change view angle
-			figName = "contact_density_time_" + str(round(time,3))
-			self.ax.view_init(elev=15, azim=-110)
-			plt.tight_layout()
-			self.fig.savefig(f'{figName}.jpg', dpi=500)
-			self.fig.clear()
-			plt.close(self.fig)
+        # Facecolors
+        facecolors = plt.cm.rainbow(C)
 
-polar_dist = PolarDist()
-polar_dist.get_dist_fig()
+        # Plot
+        fig = plt.figure(figsize=(6., 6.))
+        ax = fig.add_subplot(111, projection='3d')
+        ax.set_box_aspect((1, 1, 1))
+
+        # rcount/ccount default to 50, which silently downsamples the mesh and
+        # cuts across bin boundaries -> misaligned steps / fuzzy edges. Pass the
+        # full mesh size so every bin boundary is rendered exactly.
+        ax.plot_surface(X, Y, Z, facecolors=facecolors,
+                        rcount=X.shape[0], ccount=X.shape[1],
+                        edgecolor='none', linewidth=0, antialiased=False,
+                        alpha=0.7)
+
+        # Axes
+        ax.set_xlabel(r"$x$", fontsize=16, labelpad=1)
+        ax.set_ylabel(r"$y$", fontsize=16, labelpad=1)
+        ax.zaxis.set_rotate_label(False)
+        ax.set_zlabel(r"$z$", fontsize=16, rotation=90, labelpad=1)
+        dmax = self.density_max
+        ax.set_xlim(-dmax, dmax)
+        ax.set_ylim(-dmax, dmax)
+        ax.set_zlim(-dmax, dmax)
+        ax.xaxis.set_major_formatter(plt.NullFormatter())
+        ax.yaxis.set_major_formatter(plt.NullFormatter())
+        ax.zaxis.set_major_formatter(plt.NullFormatter())
+        ax.grid(False)
+        ax.set_xticks([])
+        ax.set_yticks([])
+        ax.set_zticks([])
+        ax.view_init(elev=15, azim=-110)
+
+        # Colorbar
+        sm = plt.cm.ScalarMappable(cmap=plt.cm.rainbow)
+        sm.set_array(np.array([self.density_min, self.density_max]))
+        cbaxes = fig.add_axes([0.85, 0.35, 0.02, 0.3])
+        fig.colorbar(sm, cax=cbaxes).set_label(
+            r"$Contact\ Density$", fontsize=15)
+
+        plt.tight_layout()
+        fig.savefig(filename, dpi=500)
+        plt.close(fig)
+
+    def get_dist_fig(self, time_increment=0.01):
+        """Render all frames."""
+        n_frames = len(self.df)
+        for row in range(n_frames):
+            density = self._get_density(row)
+            time = row * time_increment
+            filename = f"contact_density_time_{time:.3f}.jpg"
+            self._render_frame(density, filename)
+            if row % 50 == 0:
+                print(f"Frame {row}/{n_frames}")
+
+
+if __name__ == "__main__":
+    polar_dist = PolarDist()
+    polar_dist.get_dist_fig()
