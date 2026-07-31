@@ -61,6 +61,9 @@ papers/*/figures/*.pdf
 # Paper reference PDFs
 papers/*/ref/*.pdf
 
+# yade-mcp paper draft — lives in its own private repo until submission
+papers/yade-mcp/
+
 # Build outputs
 papers/*/build/
 pdf_outputs/
